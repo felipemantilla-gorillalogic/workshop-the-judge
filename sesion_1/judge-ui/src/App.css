@@ -1,0 +1,140 @@
+/* App.css - Estilos principales */
+
+/* Fuente futurista */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Paleta de colores según especificación */
+  --bg-color: #02060e;
+  --primary-color: #00e5ff;
+  --connected-color: #00e5ff;
+  --challenged-color: #ff9800;
+  --validated-color: #4cffdf;
+  --failed-color: #ff4336;
+  --panel-bg: rgba(8, 15, 30, 0.85);
+  --text-color: #e0f7fa;
+  
+  /* Z-index de capas */
+  --z-canvas: 1;
+  --z-labels: 5;
+  --z-panels: 10;
+  --z-modals: 100;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow: hidden;
+}
+
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.canvas-3d {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: var(--z-canvas);
+}
+
+/* Wrapper para las etiquetas HTML en la escena 3D */
+.html-label {
+  pointer-events: none;
+  /* Esto asegura que las etiquetas aparezcan detrás de los modales */
+  z-index: var(--z-labels) !important;
+}
+
+/* Estilos para los elementos de texto en 3D */
+.team-label {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--primary-color);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 4px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  text-align: center;
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-labels);
+}
+
+.team-name {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.team-score {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Estilos para mensajes de error */
+.error-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--failed-color);
+  text-align: center;
+  z-index: var(--z-modals);
+  max-width: 80%;
+}
+
+.error-message {
+  color: var(--text-color);
+  margin-bottom: 15px;
+}
+
+.error-message button {
+  background-color: var(--primary-color);
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.error-message button:hover {
+  background-color: #4cffdf;
+  box-shadow: 0 0 10px rgba(76, 255, 223, 0.7);
+}
+
+/* Clases para estados visuales */
+.status-connected {
+  color: var(--connected-color);
+}
+
+.status-challenged {
+  color: var(--challenged-color);
+}
+
+.status-validated {
+  color: var(--validated-color);
+}
+
+.status-failed {
+  color: var(--failed-color);
+}

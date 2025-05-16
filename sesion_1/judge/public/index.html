@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Judge - Validación IA Distribuida</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #3f51b5;
+      --primary-light: #757de8;
+      --primary-dark: #002984;
+      --secondary: #ff4081;
+      --secondary-light: #ff79b0;
+      --secondary-dark: #c60055;
+      --text-light: #ffffff;
+      --text-dark: #212121;
+      --background: #f5f7fa;
+      --card-bg: #ffffff;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --error: #f44336;
+      --info: #2196f3;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--background);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background-color: var(--primary);
+      color: var(--text-light);
+      padding: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+      z-index: 1;
+    }
+    
+    .header-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    h1 i {
+      margin-right: 15px;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .stat-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      flex: 1;
+      min-width: 200px;
+      margin: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+    
+    .stat-card i {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+    
+    .stat-card h3 {
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+    
+    .stat-card p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .leaderboard {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+    
+    .leaderboard h2 {
+      margin-bottom: 1rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+    }
+    
+    .leaderboard h2 i {
+      margin-right: 10px;
+    }
+    
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .team-card {
+      background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,1));
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+    
+    .team-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    .team-card-header {
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .team-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      background-color: #f0f0f0;
+    }
+    
+    .team-info {
+      flex: 1;
+    }
+    
+    .team-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .team-status {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    .status-connected {
+      background-color: var(--info);
+      color: white;
+    }
+    
+    .status-connecting {
+      background-color: #9c27b0;
+      color: white;
+    }
+    
+    .status-challenged {
+      background-color: var(--warning);
+      color: var(--text-dark);
+    }
+    
+    .status-validated {
+      background-color: var(--success);
+      color: white;
+    }
+    
+    .status-failed {
+      background-color: var(--error);
+      color: white;
+    }
+    
+    .team-card-body {
+      padding: 15px;
+    }
+    
+    .team-score {
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px 0;
+      color: var(--primary);
+    }
+    
+    .team-description {
+      margin-top: 10px;
+      color: #666;
+      font-size: 0.9rem;
+      height: 60px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+    
+    .team-members {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #777;
+    }
+    
+    .team-members span {
+      display: inline-block;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      padding: 2px 6px;
+      background-color: #f0f0f0;
+      border-radius: 15px;
+    }
+    
+    .status-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+    }
+    
+    .status-badge.connected {
+      background-color: var(--info);
+      box-shadow: 0 0 10px var(--info);
+    }
+    
+    .status-badge.connecting {
+      background-color: #9c27b0;
+      box-shadow: 0 0 10px #9c27b0;
+      animation: pulse 1.5s infinite;
+    }
+    
+    .status-badge.challenged {
+      background-color: var(--warning);
+      box-shadow: 0 0 10px var(--warning);
+      animation: pulse 1.5s infinite;
+    }
+    
+    .status-badge.validated {
+      background-color: var(--success);
+      box-shadow: 0 0 10px var(--success);
+    }
+    
+    .status-badge.failed {
+      background-color: var(--error);
+      box-shadow: 0 0 10px var(--error);
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.7; }
+    }
+    
+    .refresh-button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .refresh-button i {
+      margin-right: 8px;
+    }
+    
+    .refresh-button:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .restart-button {
+      background-color: var(--error);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .restart-button i {
+      margin-right: 8px;
+    }
+    
+    .restart-button:hover {
+      background-color: #d32f2f; /* Un rojo más oscuro */
+    }
+    
+    /* Estilos para el modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background-color: white;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    
+    .modal-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      color: var(--error);
+    }
+    
+    .modal-header i {
+      font-size: 1.8rem;
+      margin-right: 10px;
+    }
+    
+    .modal-header h2 {
+      font-size: 1.5rem;
+    }
+    
+    .modal-body {
+      margin-bottom: 20px;
+    }
+    
+    .modal-body p {
+      margin-bottom: 15px;
+    }
+    
+    .modal-body label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    
+    .modal-body input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+    
+    .modal-body .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .modal-body .checkbox-container input {
+      width: auto;
+      margin-right: 10px;
+      margin-bottom: 0;
+    }
+    
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .modal-footer button {
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+      margin-left: 10px;
+    }
+    
+    .cancel-button {
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+    
+    .cancel-button:hover {
+      background-color: #e0e0e0;
+    }
+    
+    .confirm-button {
+      background-color: var(--error);
+      border: none;
+      color: white;
+    }
+    
+    .confirm-button:hover {
+      background-color: #d32f2f;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #777;
+    }
+    
+    .close-modal:hover {
+      color: #333;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+    }
+    
+    .empty-state i {
+      font-size: 5rem;
+      color: #ddd;
+      margin-bottom: 20px;
+    }
+    
+    .empty-state h3 {
+      margin-bottom: 10px;
+      color: #777;
+    }
+    
+    .empty-state p {
+      color: #999;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #777;
+      font-size: 0.9rem;
+      margin-top: 40px;
+      border-top: 1px solid #eee;
+    }
+    
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .refresh-button {
+        margin-top: 15px;
+      }
+      
+      .teams-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <h1><i class="fas fa-gavel"></i> The Judge</h1>
+        <div>
+          <button class="refresh-button" onclick="refreshData()" style="margin-right: 10px;">
+            <i class="fas fa-sync-alt"></i> Actualizar
+          </button>
+          <button class="restart-button" onclick="openRestartModal()">
+            <i class="fas fa-redo-alt"></i> Reiniciar Juego
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="stats" id="stats-container">
+      <div class="stat-card">
+        <i class="fas fa-users"></i>
+        <h3 id="total-teams">0</h3>
+        <p>Equipos Registrados</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-check-circle"></i>
+        <h3 id="validated-teams">0</h3>
+        <p>Equipos Validados</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-plug"></i>
+        <h3 id="connecting-teams">0</h3>
+        <p>Conectando</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-brain"></i>
+        <h3 id="challenged-teams">0</h3>
+        <p>En Desafío</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-times-circle"></i>
+        <h3 id="failed-teams">0</h3>
+        <p>Fallos</p>
+      </div>
+    </div>
+    
+    <div class="leaderboard">
+      <h2><i class="fas fa-trophy"></i> Clasificación de Equipos</h2>
+      <div class="teams-grid" id="teams-container">
+        <!-- Los equipos se cargarán aquí dinámicamente -->
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>The Judge - Sistema de Validación IA Distribuida &copy; 2025</p>
+  </footer>
+  
+  <!-- Modal para reiniciar el juego -->
+  <div id="restartModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeRestartModal()">&times;</span>
+      <div class="modal-header">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>Reiniciar Juego</h2>
+      </div>
+      <div class="modal-body">
+        <p>Esta acción reiniciará el juego, eliminando todos los equipos y desafíos registrados. Esta operación no se puede deshacer.</p>
+        
+        <label for="adminSecret">Clave de Administrador:</label>
+        <input type="password" id="adminSecret" placeholder="Ingresa la clave de administrador">
+        
+        <div class="checkbox-container">
+          <input type="checkbox" id="keepHistory" checked>
+          <label for="keepHistory">Mantener historial (crear copia de seguridad)</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="cancel-button" onclick="closeRestartModal()">Cancelar</button>
+        <button class="confirm-button" onclick="restartGame()">Confirmar Reinicio</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Función para obtener los datos del estado
+    async function fetchStatus() {
+      try {
+        const response = await fetch('/status');
+        if (!response.ok) {
+          throw new Error('Error al obtener estado');
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('Error:', error);
+        return { nodes: [] };
+      }
+    }
+    
+    // Función para actualizar la interfaz
+    async function updateUI() {
+      const data = await fetchStatus();
+      const nodes = data.nodes || [];
+      
+      // Actualizar estadísticas
+      document.getElementById('total-teams').textContent = nodes.length;
+      
+      const validatedCount = nodes.filter(node => node.status === 'validated').length;
+      document.getElementById('validated-teams').textContent = validatedCount;
+      
+      const connectingCount = nodes.filter(node => node.status === 'connecting').length;
+      document.getElementById('connecting-teams').textContent = connectingCount;
+      
+      const challengedCount = nodes.filter(node => node.status === 'challenged').length;
+      document.getElementById('challenged-teams').textContent = challengedCount;
+      
+      const failedCount = nodes.filter(node => node.status === 'failed').length;
+      document.getElementById('failed-teams').textContent = failedCount;
+      
+      // Actualizar lista de equipos
+      const teamsContainer = document.getElementById('teams-container');
+      
+      if (nodes.length === 0) {
+        teamsContainer.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-users-slash"></i>
+            <h3>No hay equipos registrados</h3>
+            <p>Los equipos aparecerán aquí cuando se registren en el sistema.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Ordenar equipos por puntuación (mayor a menor)
+      const sortedNodes = [...nodes].sort((a, b) => b.score - a.score);
+      
+      // Generar HTML para cada equipo
+      teamsContainer.innerHTML = sortedNodes.map(node => `
+        <div class="team-card">
+          <div class="status-badge ${node.status}"></div>
+          <div class="team-card-header">
+            <img class="team-logo" src="${node.logoURL || 'https://glw-website-strapi-content.s3.amazonaws.com/GL_LOGO_f811ec3bd9.png'}" 
+              alt="${node.teamName} logo" onerror="this.src='https://glw-website-strapi-content.s3.amazonaws.com/GL_LOGO_f811ec3bd9.png'">
+            <div class="team-info">
+              <div class="team-name">${node.teamName}</div>
+              <div class="team-status status-${node.status}">${getStatusText(node.status)}</div>
+            </div>
+          </div>
+          <div class="team-card-body">
+            <div class="team-score">${node.score}</div>
+            <div class="team-description">${node.teamDescription || 'Sin descripción'}</div>
+            <div class="team-members">
+              ${(node.members || []).map(member => `<span>${member}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // Convertir códigos de estado a texto legible
+    function getStatusText(status) {
+      const statusMap = {
+        'connected': 'Conectado',
+        'connecting': 'Conectando',
+        'challenged': 'En Desafío',
+        'validated': 'Validado',
+        'failed': 'Fallido'
+      };
+      return statusMap[status] || status;
+    }
+    
+    // Función para refrescar datos manualmente
+    function refreshData() {
+      updateUI();
+    }
+    
+    // Funciones para el modal de reinicio
+    function openRestartModal() {
+      document.getElementById('restartModal').style.display = 'flex';
+    }
+    
+    function closeRestartModal() {
+      document.getElementById('restartModal').style.display = 'none';
+      // Limpiamos el campo de contraseña por seguridad
+      document.getElementById('adminSecret').value = '';
+    }
+    
+    // Función para reiniciar el juego
+    async function restartGame() {
+      const secret = document.getElementById('adminSecret').value;
+      const keepHistory = document.getElementById('keepHistory').checked;
+      
+      if (!secret) {
+        alert('Por favor, ingresa la clave de administrador');
+        return;
+      }
+      
+      try {
+        // Mostrar un indicador de carga o desactivar el botón aquí si lo deseas
+        const response = await fetch('/restart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ secret, keepHistory })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          alert('El juego ha sido reiniciado correctamente');
+          closeRestartModal();
+          refreshData(); // Actualizar la interfaz después del reinicio
+        } else {
+          alert(`Error: ${result.message || 'No se pudo reiniciar el juego'}`); 
+        }
+      } catch (error) {
+        console.error('Error al reiniciar el juego:', error);
+        alert('Error al comunicarse con el servidor');
+      }
+    }
+    
+    // Event listeners para teclas en el modal
+    document.getElementById('adminSecret').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        restartGame();
+      }
+    });
+    
+    // Cerrar modal con Escape
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && document.getElementById('restartModal').style.display === 'flex') {
+        closeRestartModal();
+      }
+    });
+    
+    // Actualizar al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      updateUI();
+      
+      // Actualizar automáticamente cada 10 segundos
+      setInterval(updateUI, 10000);
+    });
+  </script>
+</body>
+</html>

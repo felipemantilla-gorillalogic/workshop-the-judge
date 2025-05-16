@@ -1,0 +1,260 @@
+/* Custom CSS for AI Curiosities Presentation */
+
+/* Global Styles */
+:root {
+  --funny-color: #4A86E8;
+  --creepy-color: #E74C3C;
+  --historic-color: #27AE60;
+  --viral-color: #F39C12;
+  --creative-color: #9B59B6;
+}
+
+.reveal {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.reveal h1, .reveal h2, .reveal h3 {
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+  text-transform: none;
+}
+
+.reveal h1 {
+  font-size: 1.9em;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.reveal h2 {
+  font-size: 1.4em;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.reveal h3 {
+  font-size: 1.1em;
+  margin-bottom: 12px;
+}
+
+.reveal p {
+  font-size: 0.85em;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.reveal ul {
+  display: inline-block;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.author {
+  font-style: italic;
+  margin-top: 30px !important;
+  opacity: 0.7;
+  font-size: 0.9em;
+}
+
+/* Content Layout */
+.content-box {
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.content-left {
+  flex: 65%;
+  text-align: left;
+  padding-right: 10px;
+}
+
+.content-right {
+  flex: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-quote {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  width: 100%;
+  position: relative;
+}
+
+.quote-icon {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.8em;
+  line-height: 1.25;
+}
+
+/* Category intro section */
+.categories {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.category {
+  font-size: 0.9em;
+  margin: 10px;
+  padding: 10px 15px;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.category.fragment-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.categories .category:nth-child(1) {
+  background-color: var(--funny-color);
+}
+
+.categories .category:nth-child(2) {
+  background-color: var(--creepy-color);
+}
+
+.categories .category:nth-child(3) {
+  background-color: var(--historic-color);
+}
+
+.categories .category:nth-child(4) {
+  background-color: var(--viral-color);
+}
+
+/* Timeline marker */
+.content-left p:first-of-type strong {
+  display: inline-block;
+  border-radius: 3px;
+  padding: 1px 5px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin-bottom: 6px;
+  font-size: 0.85em;
+}
+
+/* Bloque de contexto adicional */
+.extra-context {
+  margin-top: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-left: 3px solid rgba(255, 255, 255, 0.3);
+  padding: 7px 10px;
+  border-radius: 3px;
+}
+
+.extra-context p {
+  margin: 0 !important;
+  line-height: 1.2;
+}
+
+.extra-context small {
+  font-size: 0.85em;
+  opacity: 0.9;
+  display: block;
+}
+
+/* Estilos para la sección de tendencias absurdas */
+.trend-tag {
+  background-color: rgba(255, 87, 51, 0.7);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9em;
+  display: inline-block;
+  margin-bottom: 8px;
+  font-family: 'Courier New', monospace;
+}
+
+.ai-absurd-meme {
+  width: 80%;
+  max-width: 500px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.ai-absurd-meme img {
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Panel de contexto adicional */
+.context-panel {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 6px;
+  padding: 12px;
+  max-width: 90%;
+  width: auto;
+  font-size: 0.75em;
+  line-height: 1.25;
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: 10;
+  display: none;
+}
+  border-radius: 6px;
+  padding: 12px;
+  max-width: 90%;
+  width: auto;
+  font-size: 0.75em;
+  line-height: 1.25;
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: 10;
+  display: none;
+}
+
+.context-button {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 4px;
+  padding: 4px 15px;
+  font-size: 0.75em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.context-button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+/* Responsive adjustments */
+@media (max-width: 800px) {
+  .content-box {
+    flex-direction: column;
+  }
+  
+  .content-left, .content-right {
+    flex: 100%;
+    padding: 0;
+  }
+  
+  .content-right {
+    margin-top: 15px;
+  }
+  
+  .reveal p {
+    font-size: 0.9em;
+  }
+  
+  .reveal h3 {
+    font-size: 1.1em;
+  }
+  
+  .reveal h2 {
+    font-size: 1.4em;
+  }
+}

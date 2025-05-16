@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Judge - Guía para Equipos Participantes</title>
+  <style>
+    :root {
+      --judge-color: #e74c3c;
+      --team-color: #3498db;
+      --openai-color: #2ecc71;
+      --accent-color: #f39c12;
+      --bg-dark: #121212;
+      --bg-darker: #0a0a0a;
+      --text-light: #f5f5f5;
+      --card-bg: rgba(25, 25, 25, 0.8);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Outfit', 'Segoe UI', Tahoma, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+    
+    /* TÍTULO Y PORTADA */
+    .title-content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+    
+    .logo-container {
+      margin-bottom: 30px;
+    }
+    
+    .logo {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto;
+      animation: pulse 4s infinite alternate;
+    }
+    
+    .glitch {
+      font-size: 5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      position: relative;
+      text-shadow: 0.05em 0 0 rgba(255,0,0,0.75),
+                  -0.025em -0.05em 0 rgba(0,255,0,0.75),
+                  0.025em 0.05em 0 rgba(0,0,255,0.75);
+      animation: glitch 1s infinite;
+      margin-bottom: 20px;
+    }
+    
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .subtitle {
+      font-size: 1.8rem;
+      color: var(--accent-color);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    
+    .description {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      opacity: 0.8;
+    }
+    
+    .tagline {
+      font-size: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    
+    .tagline span {
+      padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    
+    .tagline span:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-5px);
+    }
+    
+    /* SECCIONES GENERALES */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+    
+    h2.gradient-text {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      text-align: center;
+      background: linear-gradient(45deg, var(--team-color), var(--judge-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+    
+    .section-description {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 40px;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    /* GRID Y CARDS */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+      color: var(--accent-color);
+    }
+    
+    .card h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: var(--accent-color);
+      border-radius: 3px;
+    }
+    
+    /* BADGES */
+    .badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-right: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .badge.judge {
+      background-color: rgba(231, 76, 60, 0.3);
+      color: var(--judge-color);
+      border: 1px solid var(--judge-color);
+    }
+    
+    .badge.team {
+      background-color: rgba(52, 152, 219, 0.3);
+      color: var(--team-color);
+      border: 1px solid var(--team-color);
+    }
+    
+    .badge.openai {
+      background-color: rgba(46, 204, 113, 0.3);
+      color: var(--openai-color);
+      border: 1px solid var(--openai-color);
+    }
+    
+    .mini-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 24px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-right: 10px;
+      text-transform: uppercase;
+    }
+    
+    .mini-badge.team {
+      background-color: rgba(52, 152, 219, 0.2);
+      color: var(--team-color);
+      border: 1px solid rgba(52, 152, 219, 0.3);
+    }
+    
+    .mini-badge.judge {
+      background-color: rgba(231, 76, 60, 0.2);
+      color: var(--judge-color);
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+    
+    .mini-badge.openai {
+      background-color: rgba(46, 204, 113, 0.2);
+      color: var(--openai-color);
+      border: 1px solid rgba(46, 204, 113, 0.3);
+    }
+    
+    .mini-badge.storage {
+      background-color: rgba(155, 89, 182, 0.2);
+      color: #9b59b6;
+      border: 1px solid rgba(155, 89, 182, 0.3);
+    }
+    
+    /* LISTAS */
+    .animated-list {
+      list-style: none;
+    }
+    
+    .animated-list li {
+      margin-bottom: 15px;
+      position: relative;
+      padding-left: 25px;
+      opacity: 0;
+      animation: fadeInUp 0.5s forwards;
+      animation-delay: calc(var(--i, 0) * 0.1s);
+    }
+    
+    .animated-list li:nth-child(1) { --i: 1; }
+    .animated-list li:nth-child(2) { --i: 2; }
+    .animated-list li:nth-child(3) { --i: 3; }
+    .animated-list li:nth-child(4) { --i: 4; }
+    .animated-list li:nth-child(5) { --i: 5; }
+    
+    .animated-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent-color);
+    }
+    
+    .checkmark-list {
+      list-style: none;
+    }
+    
+    .checkmark-list li {
+      margin-bottom: 15px;
+      position: relative;
+      padding-left: 30px;
+    }
+    
+    .checkmark-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+    
+    .feature-list {
+      list-style: none;
+    }
+    
+    .feature-list li {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+    
+    /* FEATURE BOX */
+    .feature-box {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 25px;
+      background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(231, 76, 60, 0.1));
+    }
+    
+    /* TECH LABELS */
+    .tech-label {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--team-color);
+      font-weight: bold;
+      margin-right: 5px;
+    }
+    
+    .tech-highlight {
+      color: var(--accent-color);
+      font-weight: bold;
+      margin-right: 5px;
+    }
+    
+    /* API CARDS */
+    .api-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    
+    .api-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .api-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .api-header {
+      padding: 15px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .api-badge {
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    
+    .judge-api .api-header {
+      background: linear-gradient(90deg, rgba(231, 76, 60, 0.2), rgba(231, 76, 60, 0.05));
+    }
+    
+    .team-api .api-header {
+      background: linear-gradient(90deg, rgba(52, 152, 219, 0.2), rgba(52, 152, 219, 0.05));
+    }
+    
+    .openai-api .api-header {
+      background: linear-gradient(90deg, rgba(46, 204, 113, 0.2), rgba(46, 204, 113, 0.05));
+    }
+    
+    .api-content {
+      padding: 20px;
+    }
+    
+    .api-item {
+      margin-bottom: 15px;
+    }
+    
+    .api-label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .api-code {
+      display: inline-block;
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--accent-color);
+    }
+    
+    /* CODE */
+    pre {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      padding: 15px;
+      overflow-x: auto;
+      margin: 15px 0;
+    }
+    
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: #eee;
+    }
+    
+    /* TIP BOX */
+    .tip-box {
+      display: flex;
+      align-items: flex-start;
+      background: rgba(243, 156, 18, 0.1);
+      border-left: 3px solid var(--accent-color);
+      padding: 15px;
+      border-radius: 0 8px 8px 0;
+      margin-top: 20px;
+    }
+    
+    .tip-icon {
+      font-size: 1.2rem;
+      margin-right: 10px;
+    }
+    
+    /* PRACTICES GRID */
+    .practices-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+    }
+    
+    .practice-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    .practice-icon {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+    
+    .practice-card h3 {
+      margin-bottom: 15px;
+      color: var(--accent-color);
+    }
+    
+    .practice-card ul {
+      list-style: none;
+      text-align: left;
+    }
+    
+    .practice-card li {
+      margin-bottom: 10px;
+      position: relative;
+      padding-left: 20px;
+    }
+    
+    .practice-card li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent-color);
+    }
+    
+    /* TIPS CONTAINER */
+    .tips-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    
+    .tip-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+    
+    .tip-header {
+      background: linear-gradient(45deg, rgba(243, 156, 18, 0.2), rgba(243, 156, 18, 0.05));
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .tip-number {
+      background: var(--accent-color);
+      color: var(--bg-dark);
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 15px;
+    }
+    
+    .tip-card h3 {
+      margin: 0;
+      color: var(--accent-color);
+    }
+    
+    .tip-card ul {
+      list-style: none;
+      padding: 20px;
+    }
+    
+    .tip-card li {
+      margin-bottom: 12px;
+      position: relative;
+      padding-left: 25px;
+    }
+    
+    .tip-card li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent-color);
+    }
+    
+    .key-strategy {
+      background: rgba(243, 156, 18, 0.1);
+      border-radius: 8px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .strategy-icon {
+      font-size: 1.5rem;
+      margin-right: 15px;
+      color: var(--accent-color);
+    }
+    
+    /* CHALLENGES */
+    .challenges-container {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 40px;
+    }
+    
+    .challenges-container h3 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: var(--accent-color);
+    }
+    
+    .challenges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    
+    .challenge-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 15px;
+      transition: all 0.3s ease;
+    }
+    
+    .challenge-item:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .challenge-tag {
+      background: var(--judge-color);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+    }
+    
+    .challenge-item p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+    
+    .key-insight {
+      display: flex;
+      align-items: center;
+      background: rgba(243, 156, 18, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .insight-icon {
+      font-size: 2rem;
+      margin-right: 20px;
+      color: var(--accent-color);
+    }
+    
+    .insight-text h4 {
+      margin-bottom: 5px;
+      color: var(--accent-color);
+    }
+    
+    /* EXAMPLE CHALLENGE */
+    .example-challenge {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .challenge-section {
+      margin-bottom: 20px;
+      position: relative;
+      padding-left: 20px;
+      border-left: 3px solid transparent;
+      padding-left: 25px;
+    }
+    
+    .challenge-section:last-child {
+      margin-bottom: 0;
+    }
+    
+    .challenge-section:nth-child(1) {
+      border-color: var(--judge-color);
+    }
+    
+    .challenge-section:nth-child(2) {
+      border-color: var(--team-color);
+    }
+    
+    .challenge-section:nth-child(3) {
+      border-color: var(--openai-color);
+    }
+    
+    .section-label {
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+    
+    .section-label.judge {
+      background: rgba(231, 76, 60, 0.2);
+      color: var(--judge-color);
+    }
+    
+    .section-label.team {
+      background: rgba(52, 152, 219, 0.2);
+      color: var(--team-color);
+    }
+    
+    .section-label.openai {
+      background: rgba(46, 204, 113, 0.2);
+      color: var(--openai-color);
+    }
+    
+    .prompt-example {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 30px;
+    }
+    
+    .prompt-example h3 {
+      margin-bottom: 20px;
+      color: var(--openai-color);
+    }
+    
+    /* RESOURCES */
+    .resources-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .resource-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    .resource-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .resource-icon {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: var(--accent-color);
+    }
+    
+    .resource-card h3 {
+      margin-bottom: 20px;
+      color: var(--accent-color);
+    }
+    
+    .resource-links {
+      list-style: none;
+      text-align: left;
+    }
+    
+    .resource-links li {
+      margin-bottom: 12px;
+    }
+    
+    .resource-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+      position: relative;
+    }
+    
+    .resource-links a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      bottom: -2px;
+      left: 0;
+      background-color: var(--accent-color);
+      transform: scaleX(0);
+      transform-origin: bottom right;
+      transition: transform 0.3s ease;
+    }
+    
+    .resource-links a:hover {
+      color: var(--accent-color);
+    }
+    
+    .resource-links a:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+    
+    /* DASHBOARD */
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .dashboard-card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .dashboard-card h3 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--accent-color);
+    }
+    
+    .score-display {
+      background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(231, 76, 60, 0.2));
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .score-number {
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--accent-color);
+      margin-bottom: 5px;
+    }
+    
+    .score-label {
+      opacity: 0.8;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value.success {
+      color: var(--openai-color);
+    }
+    
+    .stat-value.warning {
+      color: var(--judge-color);
+    }
+    
+    .stat-value.info {
+      color: var(--team-color);
+    }
+    
+    .stat-name {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+    
+    .challenge-display {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .challenge-type {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--judge-color);
+    }
+    
+    .challenge-text {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      height: 60px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    .action-button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .solve-button {
+      background-color: var(--openai-color);
+      color: white;
+    }
+    
+    .solve-button:hover {
+      background-color: #27ae60;
+    }
+    
+    .next-button {
+      background-color: var(--team-color);
+      color: white;
+    }
+    
+    .next-button:hover {
+      background-color: #2980b9;
+    }
+    
+    /* ANIMACIONES */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1.05);
+      }
+    }
+    
+    @keyframes glitch {
+      0% {
+        text-shadow: 0.05em 0 0 rgba(255,0,0,0.75),
+                    -0.025em -0.05em 0 rgba(0,255,0,0.75),
+                    0.025em 0.05em 0 rgba(0,0,255,0.75);
+      }
+      14% {
+        text-shadow: 0.05em 0 0 rgba(255,0,0,0.75),
+                    -0.025em -0.05em 0 rgba(0,255,0,0.75),
+                    0.025em 0.05em 0 rgba(0,0,255,0.75);
+      }
+      15% {
+        text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75),
+                    0.025em 0.025em 0 rgba(0,255,0,0.75),
+                    -0.05em -0.05em 0 rgba(0,0,255,0.75);
+      }
+      49% {
+        text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75),
+                    0.025em 0.025em 0 rgba(0,255,0,0.75),
+                    -0.05em -0.05em 0 rgba(0,0,255,0.75);
+      }
+      50% {
+        text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75),
+                    0.05em 0 0 rgba(0,255,0,0.75),
+                    0 -0.05em 0 rgba(0,0,255,0.75);
+      }
+      99% {
+        text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75),
+                    0.05em 0 0 rgba(0,255,0,0.75),
+                    0 -0.05em 0 rgba(0,0,255,0.75);
+      }
+      100% {
+        text-shadow: -0.025em 0 0 rgba(255,0,0,0.75),
+                    -0.025em -0.025em 0 rgba(0,255,0,0.75),
+                    -0.025em -0.05em 0 rgba(0,0,255,0.75);
+      }
+    }
+    
+    /* MEDIA QUERIES */
+    @media (max-width: 800px) {
+      .tagline {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .glitch {
+        font-size: 3rem;
+      }
+      
+      .subtitle {
+        font-size: 1.5rem;
+      }
+      
+      h2.gradient-text {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- PORTADA -->
+  <div class="section" style="background: linear-gradient(145deg, #0f0c29, #302b63, #24243e);">
+    <div class="title-content">
+      <div class="logo-container">
+        <div class="logo">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f5af19"/>
+                <stop offset="100%" stop-color="#f12711"/>
+              </linearGradient>
+            </defs>
+            <path fill="url(#logoGrad)" d="M50,10 L90,30 L90,70 L50,90 L10,70 L10,30 Z"></path>
+            <path fill="none" stroke="white" stroke-width="3" d="M30,40 L45,50 L30,60 M55,40 L70,50 L55,60"></path>
+          </svg>
+        </div>
+      </div>
+      <h1 class="glitch" data-text="The Judge">The Judge</h1>
+      <h3 class="subtitle">Especificación para Equipos Participantes</h3>
+      <p class="description">
+        Un desafío para practicar habilidades de desarrollo con IA
+      </p>
+      <div class="tagline">
+        <span>Desarrolla.</span> <span>Conecta.</span> <span>Compite.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTRODUCCIÓN -->
+  <div class="section">
+    <h2 class="gradient-text">Visión General</h2>
+    <div class="grid-container">
+      <div class="grid-item">
+        <p>The Judge es una plataforma de desafíos de IA donde:</p>
+        <ul class="animated-list">
+          <li>Los equipos crean servidores que se conectan a un sistema central</li>
+          <li>El sistema central propone desafíos de procesamiento de texto</li>
+          <li>Los equipos utilizan IA para resolver los desafíos</li>
+          <li>Se otorgan puntos basados en la calidad de las respuestas</li>
+        </ul>
+      </div>
+      <div class="grid-item">
+        <div class="feature-box">
+          <h3>Componentes Principales</h3>
+          <ul class="feature-list">
+            <li><div class="badge judge">THE JUDGE</div> Servidor central que gestiona el juego</li>
+            <li><div class="badge team">TEAM SERVER</div> Servidor de cada equipo participante</li>
+            <li><div class="badge openai">OPENAI API</div> Utilizada para resolver desafíos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENTES NECESARIOS -->
+  <div class="section">
+    <h2 class="gradient-text">Componentes Necesarios del Team Server</h2>
+    <div class="grid-container">
+      <div class="grid-item">
+        <div class="card">
+          <h3>Componentes Esenciales</h3>
+          <ul class="checkmark-list">
+            <li><span class="tech-label">Servidor Web:</span> Para manejar solicitudes HTTP</li>
+            <li><span class="tech-label">Endpoint de Información:</span> <code>/team-info</code> para registro</li>
+            <li><span class="tech-label">Cliente HTTP:</span> Para comunicarse con The Judge</li>
+            <li><span class="tech-label">Cliente OpenAI:</span> Para procesar desafíos</li>
+            <li><span class="tech-label">Almacenamiento de Estado:</span> Para guardar tokens y desafíos</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-item">
+        <div class="card">
+          <h3>Tecnologías Recomendadas</h3>
+          <ul class="checkmark-list">
+            <li><span class="tech-highlight">Node.js + Express:</span> Para el servidor web</li>
+            <li><span class="tech-highlight">Axios:</span> Para realizar peticiones HTTP</li>
+            <li><span class="tech-highlight">Biblioteca openai:</span> Cliente oficial para OpenAI</li>
+            <li><span class="tech-highlight">Variables de entorno:</span> Para configuración</li>
+          </ul>
+          <div class="tip-box">
+            <div class="tip-icon">💡</div>
+            <p>Puedes utilizar cualquier tecnología con la que te sientas cómodo, siempre que cumpla con los requisitos de la API.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESPECIFICACIÓN DE API - REGISTRO -->
+  <div class="section">
+    <h2 class="gradient-text">Especificación de API - Registro</h2>
+    <div class="api-container">
+      <div class="api-card judge-api">
+        <div class="api-header">
+          <h3>Registro en The Judge</h3>
+          <div class="api-badge judge">THE JUDGE</div>
+        </div>
+        <div class="api-content">
+          <div class="api-item">
+            <div class="api-label">Endpoint:</div>
+            <code class="api-code">POST /register</code>
+          </div>
+          <div class="api-item">
+            <div class="api-label">Cuerpo:</div>
+            <code class="api-code">{ "callbackURL": "URL de tu endpoint /team-info" }</code>
+          </div>
+          <div class="api-item">
+            <div class="api-label">Respuesta Exitosa:</div>
+            <code class="api-code">{ "authToken": "token-auth", "openAiToken": "token-openai" }</code>
+          </div>
+        </div>
+      </div>
+      
+      <div class="api-card team-api">
+        <div class="api-header">
+          <h3>Endpoint de Información del Equipo</h3>
+          <div class="api-badge team">TEAM SERVER</div>
+        </div>
+        <div class="api-content">
+          <div class="api-item">
+            <div class="api-label">Endpoint:</div>
+            <code class="api-code">GET /team-info</code> (en tu servidor)
+          </div>
+          <div class="api-item">
+            <div class="api-label">Respuesta:</div>
+            <pre><code>{
+  "teamName": "Nombre de tu equipo",
+  "members": ["Miembro 1", "Miembro 2", ...],
+  "logoURL": "URL a tu logo (opcional)",
+  "teamDescription": "Descripción de tu equipo"
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESPECIFICACIÓN DE API - DESAFÍOS -->
+  <div class="section">
+    <h2 class="gradient-text">Especificación de API - Desafíos</h2>
+    <div class="api-container">
+      <div class="api-card judge-api">
+        <div class="api-header">
+          <h3>Solicitar un Desafío</h3>
+          <div class="api-badge judge">THE JUDGE</div>
+        </div>
+        <div class="api-content">
+          <div class="api-item">
+            <div class="api-label">Endpoint:</div>
+            <code class="api-code">GET /challenge</code>
+          </div>
+          <div class="api-item">
+            <div class="api-label">Headers:</div>
+            <code class="api-code">Authorization: Bearer {authToken}</code>
+          </div>
+          <div class="api-item">
+            <div class="api-label">Respuesta:</div>
+            <pre><code>{
+  "challengeId": "id-único-del-desafío",
+  "challenge": "Instrucciones del desafío",
+  "input": "Texto a procesar en el desafío"
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      
+      <div class="api-card judge-api">
+        <div class="api-header">
+          <h3>Enviar una Solución</h3>
+          <div class="api-badge judge">THE JUDGE</div>
+        </div>
+        <div class="api-content">
+          <div class="api-item">
+            <div class="api-label">Endpoint:</div>
+            <code class="api-code">POST /submit</code>
+          </div>
+          <div class="api-item">
+            <div class="api-label">Headers:</div>
+            <code class="api-code">Authorization: Bearer {authToken}</code>
+          </div>
+          <div class="api-item">
+            <div class="api-label">Cuerpo:</div>
+            <code class="api-code">{ "challengeId": "id-del-desafío", "response": "Tu solución" }</code>
+          </div>
+          <div class="api-item">
+            <div class="api-label">Respuesta:</div>
+            <pre><code>{
+  "score": 85,           // Puntuación (0-100)
+  "passed": true,        // true si score >= 70
+  "feedback": "Análisis de tu respuesta"
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EJEMPLO DE INTEGRACIÓN CON OPENAI -->
+  <div class="section">
+    <h2 class="gradient-text">Integración con OpenAI</h2>
+    <div class="api-container">
+      <div class="api-card openai-api">
+        <div class="api-header">
+          <h3>Configuración del Cliente</h3>
+          <div class="api-badge openai">OPENAI</div>
+        </div>
+        <div class="api-content">
+          <pre><code>const OpenAI = require('openai');
+
+// Inicializar cliente con el token recibido
+const openai = new OpenAI({
+  apiKey: openAiToken  // Token recibido durante el registro
+});</code></pre>
+        </div>
+      </div>
+      
+      <div class="api-card openai-api">
+        <div class="api-header">
+          <h3>Estructura de Prompt Recomendada</h3>
+          <div class="api-badge openai">OPENAI</div>
+        </div>
+        <div class="api-content">
+          <pre><code>const prompt = `
+${challenge.challenge}
+
+Texto de entrada:
+${challenge.input}
+
+Por favor, responde siguiendo exactamente las instrucciones anteriores.
+`;
+
+const completion = await openai.chat.completions.create({
+  model: "gpt-3.5-turbo",
+  messages: [
+    { "role": "system", "content": "Eres un asistente experto en análisis de texto." },
+    { "role": "user", "content": prompt }
+  ],
+  temperature: 0.3,  // Valor bajo para respuestas más precisas
+  max_tokens: 150    // Ajustar según necesidad
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECOMENDACIONES DE ESTADO -->
+  <div class="section">
+    <h2 class="gradient-text">Gestión del Estado</h2>
+    <div class="grid-container">
+      <div class="grid-item">
+        <div class="card">
+          <h3>Información a Almacenar</h3>
+          <ul class="feature-list">
+            <li><div class="mini-badge team">Auth</div> <strong>Tokens de autenticación</strong> para The Judge</li>
+            <li><div class="mini-badge openai">API</div> <strong>Token de OpenAI</strong> para acceso a IA</li>
+            <li><div class="mini-badge judge">Desafío</div> <strong>Desafíos activos</strong> en curso</li>
+            <li><div class="mini-badge team">Historial</div> <strong>Desafíos completados</strong> para análisis</li>
+            <li><div class="mini-badge team">Score</div> <strong>Puntuación acumulada</strong> del equipo</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-item">
+        <div class="card">
+          <h3>Opciones de Almacenamiento</h3>
+          <ul class="feature-list">
+            <li><div class="mini-badge storage">Memoria</div> Variables en tiempo de ejecución</li>
+            <li><div class="mini-badge storage">Archivos</div> JSON persistente en el sistema</li>
+            <li><div class="mini-badge storage">Base de datos</div> Para persistencia más robusta</li>
+          </ul>
+          <div class="tip-box">
+            <div class="tip-icon">💡</div>
+            <p><strong>Recomendación:</strong> Empieza con almacenamiento en memoria y avanza según necesidad.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+  <!-- MEJORES PRÁCTICAS -->
+  <div class="section">
+    <h2 class="gradient-text">Mejores Prácticas</h2>
+    <div class="practices-grid">
+      <div class="practice-card">
+        <div class="practice-icon">🛡️</div>
+        <h3>Robustez</h3>
+        <ul>
+          <li><strong>Reintentos</strong> para errores de red</li>
+          <li><strong>Validación</strong> de respuestas de APIs</li>
+          <li><strong>Respuestas de fallback</strong> si OpenAI falla</li>
+          <li><strong>Manejo de excepciones</strong> adecuado</li>
+        </ul>
+      </div>
+      <div class="practice-card">
+        <div class="practice-icon">🔒</div>
+        <h3>Seguridad</h3>
+        <ul>
+          <li><strong>Almacenamiento seguro</strong> de tokens</li>
+          <li><strong>Validación</strong> de todos los inputs</li>
+          <li><strong>HTTPS</strong> para conexiones en producción</li>
+        </ul>
+      </div>
+      <div class="practice-card">
+        <div class="practice-icon">⚡</div>
+        <h3>Rendimiento</h3>
+        <ul>
+          <li><strong>Optimización de prompts</strong> para reducir tokens</li>
+          <li><strong>Caché</strong> para respuestas similares</li>
+          <li><strong>Monitoreo</strong> de límites de API</li>
+        </ul>
+      </div>
+      <div class="practice-card">
+        <div class="practice-icon">👁️</div>
+        <h3>Experiencia</h3>
+        <ul>
+          <li><strong>Retroalimentación</strong> clara sobre estado</li>
+          <li><strong>Interfaz</strong> para visualizar progreso</li>
+          <li><strong>Logging</strong> de eventos importantes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONSEJOS PARA MAXIMIZAR LA PUNTUACIÓN -->
+  <div class="section">
+    <h2 class="gradient-text">Cómo Maximizar la Puntuación</h2>
+    <div class="tips-container">
+      <div class="tip-card">
+        <div class="tip-header">
+          <div class="tip-number">01</div>
+          <h3>Optimización de Prompts</h3>
+        </div>
+        <ul>
+          <li><strong>Adapta el prompt</strong> según el desafío</li>
+          <li>Prueba diferentes valores de <code>temperature</code> (0.0-1.0)</li>
+          <li>Ajusta <code>max_tokens</code> según la complejidad</li>
+          <li>Utiliza <strong>roles de sistema</strong> específicos</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <div class="tip-header">
+          <div class="tip-number">02</div>
+          <h3>Análisis y Mejora Continua</h3>
+        </div>
+        <ul>
+          <li><strong>Analiza el feedback</strong> para mejorar</li>
+          <li>Implementa un sistema de <strong>aprendizaje</strong> de errores</li>
+          <li>Considera diferentes <strong>modelos</strong> si están disponibles</li>
+          <li><strong>Mide y compara</strong> diferentes enfoques</li>
+        </ul>
+      </div>
+    </div>
+    <div class="key-strategy">
+      <div class="strategy-icon">🔑</div>
+      <p>Aprende de cada desafío y adapta tu enfoque según el feedback recibido.</p>
+    </div>
+  </div>
+
+  <!-- EJEMPLOS DE DESAFÍOS -->
+  <div class="section">
+    <h2 class="gradient-text">Ejemplos de Desafíos</h2>
+    <div class="challenges-container">
+      <h3>Tipos de Desafíos a Esperar</h3>
+      <div class="challenges-grid">
+        <div class="challenge-item">
+          <div class="challenge-tag">Resumen</div>
+          <p><strong>Condensar</strong> un texto en una frase</p>
+        </div>
+        <div class="challenge-item">
+          <div class="challenge-tag">Explicación</div>
+          <p><strong>Simplificar</strong> conceptos técnicos</p>
+        </div>
+        <div class="challenge-item">
+          <div class="challenge-tag">Análisis</div>
+          <p>Identificar <strong>tono emocional</strong></p>
+        </div>
+        <div class="challenge-item">
+          <div class="challenge-tag">Extracción</div>
+          <p>Identificar <strong>datos clave</strong></p>
+        </div>
+        <div class="challenge-item">
+          <div class="challenge-tag">Corrección</div>
+          <p><strong>Corregir errores</strong> gramaticales</p>
+        </div>
+        <div class="challenge-item">
+          <div class="challenge-tag">Traducción</div>
+          <p>Convertir <strong>técnico a coloquial</strong></p>
+        </div>
+        <div class="challenge-item">
+          <div class="challenge-tag">Clasificación</div>
+          <p><strong>Agrupar elementos</strong> por categorías</p>
+        </div>
+        <div class="challenge-item">
+          <div class="challenge-tag">Analogía</div>
+          <p>Crear <strong>comparaciones intuitivas</strong></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="key-insight">
+      <div class="insight-icon">💡</div>
+      <div class="insight-text">
+        <h4>La clave del éxito:</h4>
+        <p>Entender exactamente qué pide cada desafío y estructurar el prompt para obtener una respuesta precisa y relevante de OpenAI.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EJEMPLO DE DESAFÍO REAL -->
+  <div class="section">
+    <h2 class="gradient-text">Ejemplo de Desafío Real</h2>
+    <div class="example-challenge">
+      <div class="challenge-section">
+        <div class="section-label judge">Desafío:</div>
+        <p>Resume el siguiente texto en una sola frase clara.</p>
+      </div>
+      
+      <div class="challenge-section">
+        <div class="section-label team">Input:</div>
+        <p>La inteligencia artificial está transformando todas las industrias, desde la salud hasta la educación. Los recientes avances en aprendizaje profundo y procesamiento del lenguaje natural han permitido aplicaciones que antes eran imposibles. Sin embargo, también plantea desafíos éticos importantes sobre privacidad, sesgo y el futuro del trabajo humano.</p>
+      </div>
+      
+      <div class="challenge-section">
+        <div class="section-label openai">Respuesta ideal:</div>
+        <p>La inteligencia artificial está revolucionando múltiples sectores con avances tecnológicos significativos, aunque simultáneamente genera importantes desafíos éticos relacionados con la privacidad, el sesgo y el impacto laboral.</p>
+      </div>
+    </div>
+    
+    <div class="prompt-example">
+      <h3>Prompt Optimizado</h3>
+      <pre><code>const prompt = `
+Resume el siguiente texto en una sola frase clara.
+
+Texto de entrada:
+La inteligencia artificial está transformando todas las industrias, desde la salud hasta la educación. Los recientes avances en aprendizaje profundo y procesamiento del lenguaje natural han permitido aplicaciones que antes eran imposibles. Sin embargo, también plantea desafíos éticos importantes sobre privacidad, sesgo y el futuro del trabajo humano.
+
+Tu resumen debe:
+1. Capturar tanto los aspectos positivos como los desafíos mencionados
+2. Ser conciso pero completo
+3. Estar estructurado como una única frase clara
+`;
+
+// Temperatura baja (0.2) para respuestas más precisas y consistentes
+// max_tokens = 60 es suficiente para una frase concisa</code></pre>
+    </div>
+  </div>
+
+  <!-- RECURSOS ADICIONALES -->
+  <div class="section">
+    <h2 class="gradient-text">Recursos Adicionales</h2>
+    <div class="resources-container">
+      <div class="resource-card">
+        <div class="resource-icon">📚</div>
+        <h3>Documentación Técnica</h3>
+        <ul class="resource-links">
+          <li><a href="https://platform.openai.com/docs/api-reference" target="_blank">API de OpenAI</a></li>
+          <li><a href="https://axios-http.com/docs/intro" target="_blank">Axios - Cliente HTTP</a></li>
+          <li><a href="https://expressjs.com/en/4x/api.html" target="_blank">Express.js</a></li>
+          <li><a href="https://nodejs.org/api/documentation.html" target="_blank">Node.js</a></li>
+        </ul>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🔍</div>
+        <h3>Mejores Prácticas</h3>
+        <ul class="resource-links">
+          <li><a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank">Guía de Prompt Engineering</a></li>
+          <li><a href="https://nodejs.org/en/docs/guides/nodejs-docker-webapp" target="_blank">Dockerización de aplicaciones Node.js</a></li>
+          <li><a href="https://12factor.net/" target="_blank">The Twelve-Factor App</a></li>
+          <li><a href="https://dev.to/alexeagleson/how-to-use-environment-variables-in-nodejs-k3m" target="_blank">Variables de entorno en Node.js</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD PARA MONITOREO -->
+  <div class="section">
+    <h2 class="gradient-text">Dashboard del Team Server</h2>
+    <p class="section-description">Un panel de control simple puede ayudar a monitorear el estado y progreso:</p>
+    <div class="dashboard-container">
+      <div class="dashboard-card">
+        <h3>Estado del Equipo</h3>
+        <div class="score-display">
+          <div class="score-number">85</div>
+          <div class="score-label">Puntuación Total</div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value success">12</div>
+            <div class="stat-name">Completados</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value warning">1</div>
+            <div class="stat-name">En Curso</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value info">78%</div>
+            <div class="stat-name">Tasa de Éxito</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="dashboard-card">
+        <h3>Desafío Actual</h3>
+        <div class="challenge-display">
+          <div class="challenge-type">Tipo: Resumen</div>
+          <div class="challenge-text">Resume el siguiente texto en una sola frase clara y concisa que capture los puntos principales...</div>
+        </div>
+        <div class="action-buttons">
+          <button class="action-button solve-button">Resolver</button>
+          <button class="action-button next-button">Solicitar Nuevo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCLUSIONES -->
+  <div class="section" style="background: linear-gradient(145deg, #0f0c29, #302b63, #24243e);">
+    <div style="text-align: center;">
+      <h2 style="color: white; margin-bottom: 30px; font-size: 2.5rem;">¡Estás Listo para Comenzar!</h2>
+      <div style="background-color: rgba(0,0,0,0.3); padding: 30px; border-radius: 15px; max-width: 800px; margin: 0 auto 40px;">
+        <ul style="list-style: none; text-align: left;">
+          <li style="margin-bottom: 15px; padding-left: 30px; position: relative;">
+            <span style="position: absolute; left: 0; color: var(--accent-color);">✓</span>
+            Crea tu <strong style="color: var(--team-color);">Team Server</strong> con los componentes esenciales
+          </li>
+          <li style="margin-bottom: 15px; padding-left: 30px; position: relative;">
+            <span style="position: absolute; left: 0; color: var(--accent-color);">✓</span>
+            Implementa el <strong style="color: var(--team-color);">endpoint de información</strong> para el registro
+          </li>
+          <li style="margin-bottom: 15px; padding-left: 30px; position: relative;">
+            <span style="position: absolute; left: 0; color: var(--accent-color);">✓</span>
+            Establece la <strong style="color: var(--openai-color);">integración con OpenAI</strong> para resolver desafíos
+          </li>
+          <li style="margin-bottom: 15px; padding-left: 30px; position: relative;">
+            <span style="position: absolute; left: 0; color: var(--accent-color);">✓</span>
+            Desarrolla tu <strong style="color: var(--accent-color);">estrategia de optimización</strong> de prompts
+          </li>
+          <li style="margin-bottom: 15px; padding-left: 30px; position: relative;">
+            <span style="position: absolute; left: 0; color: var(--accent-color);">✓</span>
+            ¡<strong style="color: var(--judge-color);">Compite</strong> con otros equipos y acumula puntos!
+          </li>
+        </ul>
+      </div>
+      <h3 style="color: var(--accent-color); font-size: 1.8rem;">¿Preguntas?</h3>
+    </div>
+  </div>
+</body>
+</html>

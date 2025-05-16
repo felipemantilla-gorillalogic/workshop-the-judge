@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automatización Inteligente con IA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <!-- Slide 1: Portada -->
+      <section data-background-gradient="linear-gradient(to bottom right, #4a00e0, #8e2de2)">
+        <h1>Automatización Inteligente con IA</h1>
+        <h3>Construyendo sistemas inteligentes con n8n, Flowise y Prompt Engineering</h3>
+        <p class="author">Workshop Práctico <span class="date">Mayo 2025</span></p>
+        <div class="tech-icons">
+          <i class="fa-solid fa-robot"></i>
+          <i class="fa-solid fa-code-branch"></i>
+          <i class="fa-solid fa-brain"></i>
+        </div>
+      </section>
+
+      <!-- Slide 2: Introducción -->
+      <section data-background-color="#111">
+        <h2>¿Qué construiremos hoy?</h2>
+        <div class="split-layout">
+          <div class="left">
+            <ul>
+              <li class="fragment fade-up">Un sistema de categorización de tickets</li>
+              <li class="fragment fade-up">Inteligente y automatizado</li>
+              <li class="fragment fade-up">Integrado con herramientas existentes</li>
+              <li class="fragment fade-up">100% funcional al terminar</li>
+            </ul>
+          </div>
+          <div class="right">
+            <div class="demo-box fragment fade-left">
+              <div class="code-snippet">
+                <pre><code class="language-json">{
+  "input": "Mi aplicación no funciona",
+  "category": "Bug",
+  "priority": "High",
+  "assigned_to": "Tech Team"
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3: Stack Tecnológico -->
+      <section data-background="#0a0a0a">
+        <h2>El Stack Completo</h2>
+        <div class="stack-diagram">
+          <div class="stack-layer fragment fade-up" data-fragment-index="1">
+            <div class="stack-box">
+              <h3><i class="fa-solid fa-user"></i> Input</h3>
+              <p>Conversación, Email, Slack, etc.</p>
+            </div>
+          </div>
+          <div class="stack-layer fragment fade-up" data-fragment-index="2">
+            <div class="stack-box highlight">
+              <h3><i class="fa-solid fa-diagram-project"></i> n8n</h3>
+              <p>Orquestación y flujos de trabajo</p>
+            </div>
+          </div>
+          <div class="stack-layer fragment fade-up" data-fragment-index="3">
+            <div class="stack-box highlight">
+              <h3><i class="fa-solid fa-robot"></i> Flowise</h3>
+              <p>Agentes y cadenas de IA</p>
+            </div>
+          </div>
+          <div class="stack-layer fragment fade-up" data-fragment-index="4">
+            <div class="stack-box highlight">
+              <h3><i class="fa-solid fa-keyboard"></i> Prompt Eng.</h3>
+              <p>Instrucciones precisas para LLMs</p>
+            </div>
+          </div>
+          <div class="stack-layer fragment fade-up" data-fragment-index="5">
+            <div class="stack-box">
+              <h3><i class="fa-solid fa-check-double"></i> Resultados</h3>
+              <p>Categorización, Respuestas, Acciones</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 4: Objetivos de Aprendizaje -->
+      <section data-background-color="#0c1836" data-state="compact-slide">
+        <h2>Lo que lograrás hoy</h2>
+        <div class="objectives objectives-compact">
+          <div class="objective-item fragment fade-up">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <h3>Automatizar</h3>
+            <p>Flujos de trabajo complejos sin código</p>
+          </div>
+          <div class="objective-item fragment fade-up">
+            <i class="fa-solid fa-brain"></i>
+            <h3>Construir</h3>
+            <p>Agentes IA que resuelven tareas reales</p>
+          </div>
+          <div class="objective-item fragment fade-up">
+            <i class="fa-solid fa-keyboard"></i>
+            <h3>Diseñar</h3>
+            <p>Prompts efectivos que logran resultados precisos</p>
+          </div>
+          <div class="objective-item fragment fade-up">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            <h3>Integrar</h3>
+            <p>Todo en un sistema end-to-end</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5: n8n Intro -->
+      <section>
+        <section data-background-gradient="linear-gradient(to bottom, #1c2842, #111)">
+          <h2><i class="fa-solid fa-diagram-project"></i> n8n: Tu Orquestador</h2>
+          <div class="split-layout">
+            <div class="left">
+              <ul>
+                <li class="fragment fade-up">Automatización sin código</li>
+                <li class="fragment fade-up">Conecta APIs y servicios</li>
+                <li class="fragment fade-up">Lógica condicional y bifurcaciones</li>
+                <li class="fragment fade-up">Procesamiento de datos</li>
+              </ul>
+            </div>
+            <div class="right">
+              <img src="images/n8n-interface.png" alt="n8n Interface" class="fragment fade-left rounded-img">
+            </div>
+          </div>
+        </section>
+        
+        <section data-background-color="#1c2842">
+          <h3>Componentes Clave de n8n</h3>
+          <div class="components-grid">
+            <div class="component-card fragment fade-up">
+              <i class="fa-solid fa-arrow-right-to-bracket"></i>
+              <h4>Webhook</h4>
+              <p>Punto de entrada para datos externos</p>
+            </div>
+            <div class="component-card fragment fade-up">
+              <i class="fa-solid fa-globe"></i>
+              <h4>HTTP Request</h4>
+              <p>Comunícate con cualquier API</p>
+            </div>
+            <div class="component-card fragment fade-up">
+              <i class="fa-solid fa-code-branch"></i>
+              <h4>IF</h4>
+              <p>Bifurca flujos según condiciones</p>
+            </div>
+            <div class="component-card fragment fade-up">
+              <i class="fa-solid fa-pen-to-square"></i>
+              <h4>Set</h4>
+              <p>Modifica y transforma datos</p>
+            </div>
+          </div>
+        </section>
+        
+        <section data-background-color="#1c2842">
+          <h3>Ejercicio Práctico: Flujo Básico</h3>
+          <div class="exercise-preview">
+            <div class="workflow-diagram">
+              <div class="workflow-node">Webhook</div>
+              <div class="workflow-arrow">→</div>
+              <div class="workflow-node">Set</div>
+              <div class="workflow-arrow">→</div>
+              <div class="workflow-node">IF</div>
+              <div class="workflow-branch">
+                <div class="workflow-arrow workflow-arrow-down">↓</div>
+                <div class="workflow-node">True</div>
+              </div>
+              <div class="workflow-branch">
+                <div class="workflow-arrow workflow-arrow-right">→</div>
+                <div class="workflow-node">False</div>
+              </div>
+            </div>
+            <div class="code-snippet fragment fade-up">
+              <pre><code class="language-json">{
+  "input": "Necesito ayuda con mi factura",
+  "keywords": ["factura", "pago", "cobro"],
+  "category": "Billing"
+}</code></pre>
+            </div>
+          </div>
+          <p class="fragment fade-up">👉 Tiempo: 15 minutos</p>
+        </section>
+      </section>
+
+      <!-- Slide 6: Prompt Engineering -->
+      <section>
+        <section data-background-gradient="linear-gradient(to bottom, #4a2171, #111)">
+          <h2><i class="fa-solid fa-keyboard"></i> Ingeniería de Prompts</h2>
+          <div class="split-layout">
+            <div class="left">
+              <ul>
+                <li class="fragment fade-up">El arte de dar instrucciones a LLMs</li>
+                <li class="fragment fade-up">Determina la calidad del resultado</li>
+                <li class="fragment fade-up">Componente crítico para automatización</li>
+                <li class="fragment fade-up">Estructuración para consistencia</li>
+              </ul>
+            </div>
+            <div class="right">
+              <div class="prompt-example fragment fade-left">
+                <div class="prompt-title">Ejemplo de Prompt</div>
+                <div class="prompt-content">
+                  Clasifica el siguiente ticket en una de estas categorías: "Bug", "Feature Request", "Billing Issue", "Account Access". Formato de salida: JSON.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <section data-background-color="#4a2171">
+          <h3>Anatomía de un Prompt Efectivo</h3>
+          <div class="prompt-anatomy">
+            <div class="anatomy-part fragment fade-up">
+              <h4>1. Rol e Instrucción Clara</h4>
+              <div class="code-snippet">
+                <pre><code>Actúa como un experto en clasificación de tickets de soporte. Tu tarea es:</code></pre>
+              </div>
+            </div>
+            <div class="anatomy-part fragment fade-up">
+              <h4>2. Contexto y Restricciones</h4>
+              <div class="code-snippet">
+                <pre><code>Categorías disponibles: "Bug", "Feature", "Billing", "Access".
+Usa solo estas categorías. Si no estás seguro, elige la más probable.</code></pre>
+              </div>
+            </div>
+            <div class="anatomy-part fragment fade-up">
+              <h4>3. Formato de Salida</h4>
+              <div class="code-snippet">
+                <pre><code>Responde en formato JSON con esta estructura:
+{
+  "category": "string",
+  "confidence": "high|medium|low",
+  "reasoning": "string"
+}</code></pre>
+              </div>
+            </div>
+            <div class="anatomy-part fragment fade-up">
+              <h4>4. Ejemplos Few-Shot</h4>
+              <div class="code-snippet">
+                <pre><code>Entrada: "No puedo iniciar sesión"
+Salida: {"category": "Access", "confidence": "high", "reasoning": "Problema de acceso a cuenta"}</code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <section data-background-color="#4a2171">
+          <h3>Ejercicio Práctico: Diseño de Prompts</h3>
+          <div class="exercise-preview">
+            <p>Crea un prompt para categorizar tickets de soporte con estos requisitos:</p>
+            <ul>
+              <li class="fragment fade-up">Categorización en: Tech, Billing, Account, Other</li>
+              <li class="fragment fade-up">Extracción de palabras clave</li>
+              <li class="fragment fade-up">Estimación de urgencia (Low, Medium, High)</li>
+              <li class="fragment fade-up">Formato JSON estructurado</li>
+            </ul>
+            <div class="task-box fragment fade-up">
+              <p>💡 Usa la plantilla base y personalízala según las necesidades</p>
+            </div>
+          </div>
+          <p class="fragment fade-up">👉 Tiempo: 10 minutos</p>
+        </section>
+      </section>
+
+      <!-- Slide 7: Flowise y Agentes -->
+      <section>
+        <section data-background-gradient="linear-gradient(to bottom, #1e5128, #111)">
+          <h2><i class="fa-solid fa-robot"></i> Flowise y Agentes IA</h2>
+          <div class="split-layout">
+            <div class="left">
+              <ul>
+                <li class="fragment fade-up">Construcción visual de Agentes IA</li>
+                <li class="fragment fade-up">Conexión con modelos de lenguaje</li>
+                <li class="fragment fade-up">Herramientas y capacidades extendidas</li>
+                <li class="fragment fade-up">Memoria contextual</li>
+              </ul>
+            </div>
+            <div class="right">
+              <img src="images/flowise-interface.png" alt="Flowise Interface" class="fragment fade-left rounded-img">
+            </div>
+          </div>
+        </section>
+        
+        <section data-background-color="#1e5128">
+          <h3>Componentes de un Agente en Flowise</h3>
+          <div class="components-grid">
+            <div class="component-card fragment fade-up">
+              <i class="fa-solid fa-brain"></i>
+              <h4>LLM</h4>
+              <p>OpenAI, Ollama, etc.</p>
+            </div>
+            <div class="component-card fragment fade-up">
+              <i class="fa-solid fa-memory"></i>
+              <h4>Memoria</h4>
+              <p>Recuerda conversaciones previas</p>
+            </div>
+            <div class="component-card fragment fade-up">
+              <i class="fa-solid fa-toolbox"></i>
+              <h4>Herramientas</h4>
+              <p>Búsqueda, Cálculos, APIs</p>
+            </div>
+            <div class="component-card fragment fade-up">
+              <i class="fa-solid fa-network-wired"></i>
+              <h4>API</h4>
+              <p>Exposición como REST</p>
+            </div>
+          </div>
+        </section>
+        
+        <section data-background-color="#1e5128">
+          <h3>Ejercicio Práctico: Configurar un Agente</h3>
+          <div class="exercise-preview">
+            <div class="workflow-diagram">
+              <div class="flowise-node">ChatOpenAI</div>
+              <div class="workflow-arrow">↓</div>
+              <div class="flowise-node">Prompt Template</div>
+              <div class="workflow-arrow">↓</div>
+              <div class="flowise-node">LLM Chain</div>
+              <div class="workflow-arrow">↓</div>
+              <div class="flowise-node">AgentExecutor</div>
+              <div class="workflow-arrow">↓</div>
+              <div class="flowise-node">API</div>
+            </div>
+            <div class="task-box fragment fade-up">
+              <p>🔧 Usa el template pre-configurado y personaliza el prompt</p>
+            </div>
+          </div>
+          <p class="fragment fade-up">👉 Tiempo: 15 minutos</p>
+        </section>
+      </section>
+
+      <!-- Slide 8: Proyecto Integrador -->
+      <section>
+        <section data-background-gradient="linear-gradient(to bottom, #4b006e, #111)">
+          <h2><i class="fa-solid fa-puzzle-piece"></i> Proyecto Integrador</h2>
+          <div class="project-overview">
+            <div class="project-phase fragment fade-up">
+              <div class="phase-number">1</div>
+              <div class="phase-content">
+                <h4>Configuración del Flujo Base</h4>
+                <p>Webhook → Procesamiento → Flowise → Categorización</p>
+              </div>
+            </div>
+            <div class="project-phase fragment fade-up">
+              <div class="phase-number">2</div>
+              <div class="phase-content">
+                <h4>Mejora de la Categorización</h4>
+                <p>Extracción → Priorización → Reglas de Negocio</p>
+              </div>
+            </div>
+            <div class="project-phase fragment fade-up">
+              <div class="phase-number">3</div>
+              <div class="phase-content">
+                <h4>Ampliación con Herramientas</h4>
+                <p>Base de Conocimiento → Calculadora → Notificaciones</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <section data-background-color="#4b006e">
+          <h3>Fase 1: Configuración del Flujo Base</h3>
+          <div class="exercise-preview">
+            <div class="workflow-diagram-large">
+              <div class="workflow-node">Webhook</div>
+              <div class="workflow-arrow">→</div>
+              <div class="workflow-node">Set
+                <div class="node-detail">Preparar datos</div>
+              </div>
+              <div class="workflow-arrow">→</div>
+              <div class="workflow-node">HTTP Request
+                <div class="node-detail">Llamada a Flowise</div>
+              </div>
+              <div class="workflow-arrow">→</div>
+              <div class="workflow-node">IF
+                <div class="node-detail">Verificar categoría</div>
+              </div>
+              <div class="workflow-branch">
+                <div class="workflow-arrow workflow-arrow-down">↓</div>
+                <div class="workflow-node">Tech Team</div>
+              </div>
+              <div class="workflow-branch">
+                <div class="workflow-arrow workflow-arrow-right">→</div>
+                <div class="workflow-node">Billing Team</div>
+              </div>
+            </div>
+          </div>
+          <p class="fragment fade-up">👉 Tiempo: 20 minutos</p>
+          <div class="task-box fragment fade-up">
+            <p>💻 Usa el template base y completa las configuraciones</p>
+          </div>
+        </section>
+        
+        <section data-background-color="#4b006e">
+          <h3>Fase 2: Mejora de la Categorización</h3>
+          <div class="split-layout">
+            <div class="left">
+              <ul>
+                <li class="fragment fade-up">Implementa extracción de entidades clave</li>
+                <li class="fragment fade-up">Desarrolla sistema de priorización</li>
+                <li class="fragment fade-up">Agrega reglas de negocio específicas</li>
+              </ul>
+            </div>
+            <div class="right">
+              <div class="code-snippet fragment fade-left">
+                <pre><code class="language-json">{
+  "category": "Bug",
+  "priority": "High",
+  "entities": {
+    "product": "Mobile App",
+    "feature": "Login Page",
+    "user_type": "Premium"
+  },
+  "next_action": "Route to Mobile Team"
+}</code></pre>
+              </div>
+            </div>
+          </div>
+          <p class="fragment fade-up">👉 Tiempo: 20 minutos</p>
+        </section>
+        
+        <section data-background-color="#4b006e">
+          <h3>Fase 3: Ampliación con Herramientas</h3>
+          <div class="components-grid">
+            <div class="component-card fragment fade-up">
+              <i class="fa-solid fa-book"></i>
+              <h4>Base de Conocimiento</h4>
+              <p>Búsqueda de soluciones conocidas</p>
+            </div>
+            <div class="component-card fragment fade-up">
+              <i class="fa-solid fa-calculator"></i>
+              <h4>Calculadora</h4>
+              <p>Estimación de tiempo de resolución</p>
+            </div>
+            <div class="component-card fragment fade-up">
+              <i class="fa-solid fa-bell"></i>
+              <h4>Notificaciones</h4>
+              <p>Alertas basadas en prioridad</p>
+            </div>
+          </div>
+          <p class="fragment fade-up">👉 Tiempo: 20 minutos</p>
+          <div class="task-box fragment fade-up">
+            <p>🔍 Integra herramientas a tu agente en Flowise</p>
+          </div>
+        </section>
+      </section>
+
+      <!-- Slide 9: Bonus - MCP -->
+      <section data-background-color="#03001C">
+        <h2>Bonus: Model Context Protocol (MCP)</h2>
+        <div class="bonus-content">
+          <div class="bonus-item fragment fade-up">
+            <h3>¿Qué es MCP?</h3>
+            <p>Protocolo para mejorar la gestión de contexto en LLMs</p>
+          </div>
+          <div class="bonus-item fragment fade-up">
+            <h3>Beneficios</h3>
+            <ul>
+              <li>Mejor retención de instrucciones</li>
+              <li>Optimización del uso de tokens</li>
+              <li>Consistencia en conversaciones largas</li>
+            </ul>
+          </div>
+          <div class="bonus-item fragment fade-up">
+            <h3>Aplicaciones</h3>
+            <p>Ideal para agentes que mantienen conversaciones largas o complejas</p>
+          </div>
+        </div>
+        <div class="resources-link fragment fade-up">
+          <p>📚 Recursos adicionales en el repositorio del taller</p>
+        </div>
+      </section>
+
+      <!-- Slide 10: Cierre -->
+      <section data-background-gradient="linear-gradient(to bottom right, #4a00e0, #8e2de2)">
+        <h2>¡Listo para automatizar!</h2>
+        <div class="closing-content">
+          <div class="achievements">
+            <h3>Lo que has construido</h3>
+            <ul>
+              <li class="fragment fade-up">Un sistema completo de categorización</li>
+              <li class="fragment fade-up">Integración entre n8n y Flowise</li>
+              <li class="fragment fade-up">Agentes IA con capacidades extendidas</li>
+              <li class="fragment fade-up">Prompts optimizados para resultados precisos</li>
+            </ul>
+          </div>
+          <div class="next-steps fragment fade-up">
+            <h3>Siguientes pasos</h3>
+            <div class="resources-grid">
+              <div class="resource-card">
+                <i class="fa-brands fa-github"></i>
+                <p>Repositorio<br>con Templates</p>
+              </div>
+              <div class="resource-card">
+                <i class="fa-solid fa-book"></i>
+                <p>Documentación<br>Extendida</p>
+              </div>
+              <div class="resource-card">
+                <i class="fa-solid fa-users"></i>
+                <p>Comunidad<br>de Práctica</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="contact-info fragment fade-up">¿Preguntas? ¡Estamos para ayudarte!</p>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/zoom/zoom.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      mouseWheel: true,
+      transition: 'slide',
+      transitionSpeed: 'fast',
+      backgroundTransition: 'fade',
+      slideNumber: true,
+      width: 1400,
+      height: 1200,
+      minScale: 0.01,
+      maxScale: 4.0,
+      margin: 0.005,
+      center: true,
+      disableLayout: false,
+      plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealZoom ]
+    });
+  </script>
+</body>
+</html>

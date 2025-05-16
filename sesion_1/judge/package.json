@@ -1,0 +1,31 @@
+{
+  "name": "the-judge",
+  "version": "1.0.0",
+  "description": "Servidor central que gestiona la validación de múltiples servidores de equipos participantes en un reto de programación IA",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node -r dotenv/config src/server.js",
+    "dev": "nodemon -r dotenv/config src/server.js"
+  },
+  "keywords": [
+    "judge",
+    "ai",
+    "challenge"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.5",
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.18.2",
+    "openai": "^4.28.0",
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}

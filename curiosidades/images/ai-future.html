@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Future Image</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #1c1e20;
+        }
+        .placeholder {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            color: white;
+            background: linear-gradient(135deg, #182848 0%, #4B6CB7 100%);
+            position: relative;
+        }
+        .placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 30% 40%, rgba(76, 161, 255, 0.4) 0%, transparent 25%),
+                radial-gradient(circle at 70% 60%, rgba(155, 89, 182, 0.4) 0%, transparent 25%);
+        }
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            z-index: 1;
+        }
+        p {
+            font-size: 18px;
+            opacity: 0.7;
+            z-index: 1;
+        }
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .element {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+        }
+        .lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .line {
+            position: absolute;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.1);
+            animation: moveLines 15s linear infinite;
+        }
+        @keyframes moveLines {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="placeholder">
+        <div class="lines" id="lines"></div>
+        <div class="floating-elements" id="elements"></div>
+        <h1>El Futuro de la IA</h1>
+        <p>Imagen de fondo para presentación</p>
+    </div>
+
+    <script>
+        // Create floating elements
+        const elementsContainer = document.getElementById('elements');
+        for (let i = 0; i < 15; i++) {
+            const element = document.createElement('div');
+            element.classList.add('element');
+            element.style.left = `${Math.random() * 90 + 5}%`;
+            element.style.top = `${Math.random() * 90 + 5}%`;
+            element.style.opacity = Math.random() * 0.5 + 0.1;
+            element.style.transform = `rotate(${Math.random() * 90}deg)`;
+            elementsContainer.appendChild(element);
+        }
+
+        // Create lines
+        const linesContainer = document.getElementById('lines');
+        for (let i = 0; i < 10; i++) {
+            const line = document.createElement('div');
+            line.classList.add('line');
+            line.style.top = `${Math.random() * 100}%`;
+            line.style.width = `${Math.random() * 30 + 20}%`;
+            line.style.animationDelay = `${Math.random() * 5}s`;
+            line.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            linesContainer.appendChild(line);
+        }
+    </script>
+</body>
+</html>

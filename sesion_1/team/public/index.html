@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Panel de Control para gestionar múltiples equipos en el desafío de inteligencia artificial 2025">
+  <title>Panel de Control - IA Challenge 2025</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4a148c;
+      --primary-light: #7c43bd;
+      --primary-dark: #12005e;
+      --secondary: #ff9800;
+      --secondary-light: #ffc947;
+      --secondary-dark: #c66900;
+      --text-light: #ffffff;
+      --text-dark: #212121;
+      --background: #f5f7fa;
+      --card-bg: #ffffff;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --error: #f44336;
+      --info: #2196f3;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--background);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background-color: var(--primary);
+      color: var(--text-light);
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+      z-index: 1;
+    }
+    
+    .header-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .team-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    .team-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-right: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    
+    .team-data h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .team-data p {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    
+    .team-stats {
+      display: flex;
+      margin: 10px 0;
+      gap: 20px;
+    }
+    
+    .team-stat {
+      display: flex;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+    
+    .team-stat strong {
+      margin-right: 5px;
+    }
+    
+    #team-score {
+      font-weight: bold;
+      color: var(--secondary);
+    }
+    
+    .main-content {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2rem;
+    }
+    
+    .teams-list {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      height: fit-content;
+    }
+    
+    .teams-list h2 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .teams-list h2 i {
+      margin-right: 10px;
+    }
+    
+    .team-item {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid #eee;
+    }
+    
+    .team-item:hover {
+      background-color: #f9f9f9;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .team-item.active {
+      background-color: rgba(74, 20, 140, 0.1);
+      border-left: 4px solid var(--primary);
+    }
+    
+    .team-item-header {
+      display: flex;
+      align-items: center;
+    }
+    
+    .team-item .team-logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 15px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      object-fit: cover;
+    }
+    
+    .team-name {
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .team-status {
+      font-size: 0.8rem;
+      margin-top: 5px;
+    }
+    
+    .registered {
+      color: var(--success);
+    }
+    
+    .not-registered {
+      color: var(--warning);
+    }
+    
+    .team-panel {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    
+    .no-team-selected {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 400px;
+      color: #999;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .no-team-selected i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.3;
+    }
+    
+    .no-team-selected h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    @media (max-width: 992px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .teams-list {
+        margin-bottom: 2rem;
+      }
+    }
+    
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    
+    .card h2 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .card h2 i {
+      margin-right: 10px;
+    }
+    
+    .button {
+      background-color: var(--primary);
+      color: var(--text-light);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      margin-right: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      min-width: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: all 0.6s ease;
+    }
+    
+    .button:hover::before {
+      left: 100%;
+    }
+    
+    .button i {
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+    
+    .button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    }
+    
+    .button.secondary {
+      background-color: var(--secondary);
+      color: var(--text-dark);
+    }
+    
+    .button.secondary:hover {
+      background-color: var(--secondary-dark);
+    }
+    
+    .button[style*="background-color: var(--error)"] {
+      background-color: var(--error) !important;
+      color: white;
+    }
+    
+    .button[style*="background-color: var(--error)"]:hover {
+      background-color: #d32f2f !important;
+    }
+    
+    .button:disabled {
+      background-color: #e0e0e0;
+      color: #9e9e9e;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .button:disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .button:disabled:hover::before {
+      left: -100%;
+    }
+    
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: flex-start;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    
+    .status-registered {
+      background-color: var(--info);
+      color: white;
+    }
+    
+    .status-not-registered {
+      background-color: var(--warning);
+      color: var(--text-dark);
+    }
+    
+    .log-container {
+      background-color: #1e1e2e;
+      color: #f0f0f0;
+      border-radius: 10px;
+      padding: 1.2rem;
+      margin-top: 1.5rem;
+      height: 220px;
+      overflow-y: auto;
+      font-family: 'SF Mono', 'Consolas', monospace;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .log-entry {
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 8px;
+      transition: all 0.2s ease;
+    }
+    
+    .log-entry:hover {
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 4px;
+      padding-left: 5px;
+    }
+    
+    .log-timestamp {
+      color: #a0a0a0;
+      margin-right: 12px;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    
+    .log-info {
+      color: #69F0AE;
+      font-weight: 500;
+    }
+    
+    .log-warn {
+      color: #FFCC80;
+      font-weight: 500;
+    }
+    
+    .log-error {
+      color: #FF8A80;
+      font-weight: 500;
+    }
+    
+    .challenge-card {
+      background-color: #f8f9fc;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      border: 1px solid #eaedf3;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .challenge-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    
+    .challenge-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: var(--primary);
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eaedf3;
+    }
+    
+    .challenge-input {
+      margin-bottom: 15px;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+      font-family: 'SF Mono', 'Consolas', monospace;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #333;
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+    
+    .challenge-response {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: var(--primary-light);
+      color: white;
+      border-radius: 8px;
+      font-family: 'SF Mono', 'Consolas', monospace;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      position: relative;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+    
+    .challenge-response::before {
+      content: 'Respuesta AI';
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      background-color: var(--primary-dark);
+      color: white;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .challenge-result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      position: relative;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+    
+    .challenge-result:hover {
+      transform: translateY(-2px);
+    }
+    
+    .challenge-result.success {
+      background-color: rgba(76, 175, 80, 0.1);
+      border-left: 4px solid var(--success);
+    }
+    
+    .challenge-result.success::before {
+      content: 'Éxito';
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      background-color: var(--success);
+      color: white;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .challenge-result.failed {
+      background-color: rgba(244, 67, 54, 0.1);
+      border-left: 4px solid var(--error);
+    }
+    
+    .challenge-result.failed::before {
+      content: 'Error';
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      background-color: var(--error);
+      color: white;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Nuevos estilos para la visualización mejorada de resultados */
+    .response-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    .response-column {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .response-box {
+      flex: 1;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .response-box h4 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      color: var(--primary);
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eaedf3;
+    }
+    
+    .response-ai {
+      background-color: #f0f7ff;
+      border-left: 4px solid #3f51b5;
+    }
+    
+    .response-result {
+      background-color: #f9f9f9;
+      border-left: 4px solid #009688;
+    }
+    
+    .result-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    
+    .result-badge.success {
+      background-color: var(--success);
+      color: white;
+    }
+    
+    .result-badge.failed {
+      background-color: var(--error);
+      color: white;
+    }
+    
+    .response-message {
+      line-height: 1.6;
+      font-size: 0.95rem;
+      white-space: pre-line;
+    }
+    
+    .score-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    .score-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, var(--primary-light), var(--primary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      position: relative;
+      margin: 20px 0;
+    }
+    
+    .score-label {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--primary-dark);
+      color: white;
+      padding: 4px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    
+    @media (max-width: 768px) {
+      .response-details {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #777;
+      font-size: 0.9rem;
+      margin-top: 2rem;
+      border-top: 1px solid #eee;
+    }
+    
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .team-info {
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="team-info">
+          <img id="team-logo" src="https://placekitten.com/200/200" alt="Logo del equipo" class="team-logo">
+          <div class="team-data">
+            <h1 id="team-name">Gorilla Team</h1>
+            <p id="team-description">Equipo especializado en IA y procesamiento de lenguaje natural.</p>
+            <div class="team-stats">
+              <div class="team-stat">
+                <strong>Puntuación:</strong>
+                <span id="team-score">0</span>
+              </div>
+              <div class="team-stat">
+                <strong>Desafíos completados:</strong>
+                <span id="team-challenges">0</span>
+              </div>
+            </div>
+            <div id="status-badge" class="status-badge status-not-registered">No registrado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="main-content">
+      <!-- Lista de equipos -->
+      <div class="teams-list">
+        <h2><i class="fas fa-users"></i> Equipos</h2>
+        <div id="teams-container">
+          <!-- Aquí se cargarán los equipos dinámicamente -->
+          <div class="team-item">
+            <div class="team-item-header">
+              <img class="team-logo" src="https://glw-website-strapi-content.s3.amazonaws.com/GL_LOGO_f811ec3bd9.png" alt="Logo del equipo">
+              <div>
+                <div class="team-name">Cargando equipos...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Panel de equipo seleccionado -->
+      <div class="team-panel" id="team-panel">
+        <div class="no-team-selected" id="no-team-selected">
+          <i class="fas fa-user-group"></i>
+          <h2>Selecciona un equipo</h2>
+          <p>Elige un equipo de la lista para gestionar sus desafíos</p>
+        </div>
+        
+        <div id="team-content" style="display: none;">
+          <div class="card">
+            <h2><i class="fas fa-cogs"></i> Control del equipo</h2>
+            <div class="button-container">
+              <button id="register-btn" class="button"><i class="fas fa-user-check"></i> Registrar equipo</button>
+              <button id="challenge-btn" class="button secondary" disabled><i class="fas fa-clipboard-list"></i> Solicitar desafío</button>
+              <button id="solve-btn" class="button" disabled><i class="fas fa-brain"></i> Resolver y enviar</button>
+              <button id="full-flow-btn" class="button secondary"><i class="fas fa-play-circle"></i> Ejecutar flujo completo</button>
+              <button id="reset-btn" class="button" style="background-color: var(--error);"><i class="fas fa-undo-alt"></i> Reiniciar estado</button>
+            </div>
+            
+            <div class="log-container" id="log-container">
+              <!-- Los logs se mostrarán aquí -->
+            </div>
+          </div>
+          
+            <div class="card" id="challenge-container" style="display: none;">
+              <h2><i class="fas fa-tasks"></i> Desafío actual</h2>
+              <div class="challenge-card">
+                <div class="challenge-title" id="challenge-title">Sin desafío activo</div>
+                <div class="challenge-input" id="challenge-input"></div>
+                
+                <!-- Nueva sección de respuesta y resultado mejorada -->
+                <div id="challenge-result-section" style="display: none;">
+                  <div class="response-details">
+                    <div class="response-column">
+                      <div class="response-box response-ai">
+                        <h4>Respuesta generada</h4>
+                        <div class="response-message" id="ai-response"></div>
+                      </div>
+                    </div>
+                    <div class="response-column">
+                      <div class="response-box response-result">
+                        <h4>Resultado de la evaluación</h4>
+                        <div id="result-badge" class="result-badge success">Exitoso</div>
+                        <div class="response-message" id="result-message"></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="score-display">
+                    <div class="score-circle">
+                      <span class="score-label">Puntuación</span>
+                      <span id="result-score">0</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Mantener estos contenedores para compatibilidad con el código JavaScript existente, pero ocultarlos -->
+                <div id="challenge-response-container" style="display: none;">
+                  <h3>Respuesta generada:</h3>
+                  <div class="challenge-response" id="challenge-response"></div>
+                </div>
+                <div id="challenge-result-container" style="display: none;">
+                  <h3>Resultado:</h3>
+                  <div class="challenge-result" id="challenge-result"></div>
+                  <div class="score" id="challenge-score">0</div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>Panel de Control - IA Challenge 2025</p>
+  </footer>
+  
+  <script>
+    // Referencias a elementos del DOM
+    const registerBtn = document.getElementById('register-btn');
+    const challengeBtn = document.getElementById('challenge-btn');
+    const solveBtn = document.getElementById('solve-btn');
+    const fullFlowBtn = document.getElementById('full-flow-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const logContainer = document.getElementById('log-container');
+    const statusBadge = document.getElementById('status-badge');
+    const challengeContainer = document.getElementById('challenge-container');
+    const challengeTitle = document.getElementById('challenge-title');
+    const challengeInput = document.getElementById('challenge-input');
+    
+    // Referencias a los elementos de la interfaz antigua (para compatibilidad)
+    const challengeResponseContainer = document.getElementById('challenge-response-container');
+    const challengeResponse = document.getElementById('challenge-response');
+    const challengeResultContainer = document.getElementById('challenge-result-container');
+    const challengeResult = document.getElementById('challenge-result');
+    const challengeScore = document.getElementById('challenge-score');
+    
+    // Referencias a los elementos de la nueva interfaz
+    const challengeResultSection = document.getElementById('challenge-result-section');
+    const aiResponse = document.getElementById('ai-response');
+    const resultBadge = document.getElementById('result-badge');
+    const resultMessage = document.getElementById('result-message');
+    const resultScore = document.getElementById('result-score');
+    
+    const teamScore = document.getElementById('team-score');
+    const teamChallenges = document.getElementById('team-challenges');
+    const teamsContainer = document.getElementById('teams-container');
+    const teamPanel = document.getElementById('team-panel');
+    const noTeamSelected = document.getElementById('no-team-selected');
+    const teamContent = document.getElementById('team-content');
+    
+    // Estado global
+    let teams = [];
+    let selectedTeamId = null;
+    
+    // Cargar la lista de equipos
+    async function loadTeams() {
+      try {
+        const response = await fetch('/teams');
+        const data = await response.json();
+        
+        teams = data.teams;
+        renderTeamsList();
+        
+        if (teams.length > 0) {
+          logMessage('info', `${teams.length} equipos cargados correctamente`);
+        } else {
+          logMessage('warn', 'No se encontraron equipos disponibles');
+        }
+      } catch (error) {
+        logMessage('error', `Error al cargar equipos: ${error.message}`);
+      }
+    }
+    
+    // Renderizar la lista de equipos
+    function renderTeamsList() {
+      teamsContainer.innerHTML = '';
+      
+      teams.forEach(team => {
+        const teamItem = document.createElement('div');
+        teamItem.className = `team-item${selectedTeamId === team.id ? ' active' : ''}`;
+        teamItem.setAttribute('data-team-id', team.id);
+        
+        teamItem.innerHTML = `
+          <div class="team-item-header">
+            <img class="team-logo" src="${team.logoURL}" alt="Logo de ${team.teamName}">
+            <div>
+              <div class="team-name">${team.teamName}</div>
+              <div class="team-status ${team.registered ? 'registered' : 'not-registered'}">
+                ${team.registered ? 'Registrado' : 'No registrado'}
+              </div>
+            </div>
+          </div>
+        `;
+        
+        teamItem.addEventListener('click', () => selectTeam(team.id));
+        teamsContainer.appendChild(teamItem);
+      });
+    }
+    
+    // Seleccionar un equipo
+    async function selectTeam(teamId) {
+      selectedTeamId = teamId;
+      
+      // Actualizar UI
+      renderTeamsList();
+      showTeamPanel();
+      clearLogs();
+      logMessage('info', `Equipo seleccionado: ${teamId}`);
+      
+      // Cargar información detallada del equipo
+      await loadTeamStatus(teamId);
+    }
+    
+    // Mostrar panel de equipo
+    function showTeamPanel() {
+      noTeamSelected.style.display = 'none';
+      teamContent.style.display = 'block';
+    }
+    
+    // Cargar el estado del equipo seleccionado
+    async function loadTeamStatus(teamId) {
+      clearLogs();
+      logMessage('info', `Cargando información del equipo ${teamId}...`);
+      
+      try {
+        const response = await fetch(`/team-status?teamId=${teamId}`);
+        const data = await response.json();
+        
+        if (data.success) {
+          // Actualizar información visual
+          document.getElementById('team-logo').src = data.teamInfo.logoURL;
+          document.getElementById('team-name').textContent = data.teamInfo.teamName;
+          document.getElementById('team-description').textContent = data.teamInfo.teamDescription;
+          
+          // Actualizar estadísticas
+          teamScore.textContent = data.teamInfo.score || 0;
+          teamChallenges.textContent = data.teamInfo.challengesCompleted || 0;
+          
+          // Actualizar estado del registro
+          updateRegistrationStatus(data.registered);
+          
+          // Actualizar desafío activo si existe
+          if (data.activeChallenge) {
+            challengeContainer.style.display = 'block';
+            challengeTitle.textContent = data.activeChallenge.challenge;
+            challengeInput.textContent = data.activeChallenge.input;
+            solveBtn.disabled = false;
+            logMessage('info', `Equipo tiene un desafío activo con ID: ${data.activeChallenge.challengeId}`);
+          } else {
+            challengeContainer.style.display = 'none';
+            solveBtn.disabled = true;
+          }
+          
+          // Limpiar contenedores de respuesta y resultado
+          challengeResponseContainer.style.display = 'none';
+          challengeResultContainer.style.display = 'none';
+          challengeResultSection.style.display = 'none';
+          
+          logMessage('info', `Información del equipo ${data.teamInfo.teamName} cargada correctamente`);
+        } else {
+          logMessage('error', `Error al cargar información del equipo: ${data.message}`);
+        }
+      } catch (error) {
+        logMessage('error', `Error al cargar información del equipo: ${error.message}`);
+      }
+    }
+    
+    // Actualizar estado de registro en la UI
+    function updateRegistrationStatus(isRegistered) {
+      if (isRegistered) {
+        statusBadge.className = 'status-badge status-registered';
+        statusBadge.textContent = 'Registrado';
+        registerBtn.disabled = true;
+        challengeBtn.disabled = false;
+      } else {
+        statusBadge.className = 'status-badge status-not-registered';
+        statusBadge.textContent = 'No registrado';
+        registerBtn.disabled = false;
+        challengeBtn.disabled = true;
+      }
+    }
+    
+    // Registrar un equipo
+    async function registerTeam() {
+      if (!selectedTeamId) {
+        logMessage('warn', 'Ningún equipo seleccionado');
+        return;
+      }
+      
+      logMessage('info', `Registrando equipo ${selectedTeamId} con el servidor Judge...`);
+      
+      try {
+        const response = await fetch('/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ teamId: selectedTeamId })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          logMessage('info', data.message || 'Equipo registrado correctamente');
+          
+          // Actualizar estado local
+          updateRegistrationStatus(true);
+          
+          // Actualizar lista de equipos
+          await loadTeams();
+        } else {
+          logMessage('error', `Error al registrar: ${data.message}`);
+        }
+      } catch (error) {
+        logMessage('error', `Error al registrar: ${error.message}`);
+      }
+    }
+    
+    // Solicitar un desafío
+    async function requestChallenge() {
+      if (!selectedTeamId) {
+        logMessage('warn', 'Ningún equipo seleccionado');
+        return;
+      }
+      
+      logMessage('info', `Solicitando un desafío para el equipo ${selectedTeamId}...`);
+      
+      try {
+        const response = await fetch('/request-challenge', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ teamId: selectedTeamId })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          logMessage('info', `Desafío recibido con ID: ${data.challenge.challengeId}`);
+          
+          // Mostrar información del desafío
+          challengeContainer.style.display = 'block';
+          challengeTitle.textContent = data.challenge.challenge;
+          challengeInput.textContent = data.challenge.input;
+          challengeResponseContainer.style.display = 'none';
+          challengeResultContainer.style.display = 'none';
+          
+          // Habilitar botón de resolver
+          solveBtn.disabled = false;
+          
+          // Actualizar lista de equipos
+          await loadTeams();
+        } else {
+          logMessage('error', `Error al solicitar desafío: ${data.message}`);
+        }
+      } catch (error) {
+        logMessage('error', `Error al solicitar desafío: ${error.message}`);
+      }
+    }
+    
+    // Resolver un desafío
+    async function solveChallenge() {
+      if (!selectedTeamId) {
+        logMessage('warn', 'Ningún equipo seleccionado');
+        return;
+      }
+      
+      // Obtener el equipo actual
+      const activeTeam = teams.find(team => team.id === selectedTeamId);
+      if (!activeTeam) {
+        logMessage('warn', 'Equipo no encontrado');
+        return;
+      }
+      
+      if (!activeTeam.activeChallengeId) {
+        logMessage('warn', 'No hay un desafío activo para resolver');
+        return;
+      }
+      
+      logMessage('info', `Resolviendo desafío para el equipo ${selectedTeamId}...`);
+      logMessage('info', `ID del desafío: ${activeTeam.activeChallengeId}`);
+      
+      try {
+        const response = await fetch('/solve-challenge', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            challengeId: activeTeam.activeChallengeId,
+            teamId: selectedTeamId // Enviamos también el ID del equipo como respaldo
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          logMessage('info', 'Desafío resuelto y solución enviada');
+          
+          // Mostrar respuesta y resultado
+          // Actualizar también los elementos de la interfaz antigua para compatibilidad
+          challengeResponseContainer.style.display = 'none';
+          challengeResponse.textContent = data.response;
+          
+          challengeResultContainer.style.display = 'none';
+          const resultStatus = data.result.status === 'success' ? 'success' : 'failed';
+          challengeResult.className = `challenge-result ${resultStatus}`;
+          challengeResult.textContent = data.result.message;
+          challengeScore.textContent = data.result.score;
+          
+          // Actualizar la nueva interfaz mejorada
+          challengeResultSection.style.display = 'block';
+          aiResponse.textContent = data.response;
+          resultBadge.className = `result-badge ${resultStatus}`;
+          resultBadge.textContent = resultStatus === 'success' ? 'Exitoso' : 'Fallido';
+          resultMessage.textContent = data.result.message;
+          resultScore.textContent = data.result.score;
+          
+          // Deshabilitar botón de resolver
+          solveBtn.disabled = true;
+          
+          // Actualizar lista de equipos
+          await loadTeams();
+          
+          // Actualizar estado del equipo seleccionado
+          await loadTeamStatus(selectedTeamId);
+        } else {
+          logMessage('error', `Error al resolver desafío: ${data.message}`);
+        }
+      } catch (error) {
+        logMessage('error', `Error al resolver desafío: ${error.message}`);
+      }
+    }
+    
+    // Ejecutar flujo completo
+    async function executeFullFlow() {
+      if (!selectedTeamId) {
+        logMessage('warn', 'Ningún equipo seleccionado');
+        return;
+      }
+      
+      logMessage('info', `Ejecutando flujo completo para el equipo ${selectedTeamId}...`);
+      
+      try {
+        const response = await fetch('/full-flow', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ teamId: selectedTeamId })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          logMessage('info', `Flujo completo ejecutado con éxito para el equipo ${data.teamName}`);
+          
+          // Extraer información
+          const registration = data.results.registration;
+          const challenge = data.results.challenge;
+          const solution = data.results.solution;
+          
+          // Mostrar información del desafío
+          challengeContainer.style.display = 'block';
+          challengeTitle.textContent = challenge.challenge;
+          challengeInput.textContent = challenge.input;
+          
+          // Mostrar respuesta y resultado (compatibilidad con interfaz antigua)
+          challengeResponseContainer.style.display = 'none';
+          challengeResponse.textContent = solution.response;
+          
+          challengeResultContainer.style.display = 'none';
+          const resultStatus = solution.result.status === 'success' ? 'success' : 'failed';
+          challengeResult.className = `challenge-result ${resultStatus}`;
+          challengeResult.textContent = solution.result.message;
+          challengeScore.textContent = solution.result.score;
+          
+          // Actualizar la nueva interfaz mejorada
+          challengeResultSection.style.display = 'block';
+          aiResponse.textContent = solution.response;
+          resultBadge.className = `result-badge ${resultStatus}`;
+          resultBadge.textContent = resultStatus === 'success' ? 'Exitoso' : 'Fallido';
+          resultMessage.textContent = solution.result.message;
+          resultScore.textContent = solution.result.score;
+          
+          // Deshabilitar botón de resolver
+          solveBtn.disabled = true;
+          
+          // Actualizar lista de equipos
+          await loadTeams();
+          
+          // Actualizar estado del equipo seleccionado
+          await loadTeamStatus(selectedTeamId);
+        } else {
+          logMessage('error', `Error en flujo completo: ${data.message}`);
+        }
+      } catch (error) {
+        logMessage('error', `Error en flujo completo: ${error.message}`);
+      }
+    }
+    
+    // Reiniciar estado del equipo
+    async function resetTeamState() {
+      if (!selectedTeamId) {
+        logMessage('warn', 'Ningún equipo seleccionado');
+        return;
+      }
+      
+      logMessage('info', `Reiniciando estado del equipo ${selectedTeamId}...`);
+      
+      try {
+        const response = await fetch('/reset-team', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ teamId: selectedTeamId })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          logMessage('info', data.message || 'Estado reiniciado correctamente');
+          
+          // Resetear UI
+          updateRegistrationStatus(false);
+          challengeContainer.style.display = 'none';
+          challengeResponseContainer.style.display = 'none';
+          challengeResultContainer.style.display = 'none';
+          challengeResultSection.style.display = 'none';
+          
+          // Actualizar lista de equipos
+          await loadTeams();
+          
+          // Actualizar estado del equipo seleccionado
+          await loadTeamStatus(selectedTeamId);
+        } else {
+          logMessage('error', `Error al reiniciar estado: ${data.message}`);
+        }
+      } catch (error) {
+        logMessage('error', `Error al reiniciar estado: ${error.message}`);
+      }
+    }
+    
+    // Limpiar logs
+    function clearLogs() {
+      logContainer.innerHTML = '';
+    }
+    
+    // Función para agregar mensajes al log
+    function logMessage(type, message) {
+      const logEntry = document.createElement('div');
+      logEntry.className = 'log-entry';
+      
+      const timestamp = document.createElement('span');
+      timestamp.className = 'log-timestamp';
+      timestamp.textContent = new Date().toLocaleTimeString();
+      
+      const messageSpan = document.createElement('span');
+      messageSpan.className = `log-${type}`;
+      messageSpan.textContent = message;
+      
+      logEntry.appendChild(timestamp);
+      logEntry.appendChild(messageSpan);
+      
+      logContainer.appendChild(logEntry);
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+    
+    // Event listeners
+    registerBtn.addEventListener('click', registerTeam);
+    challengeBtn.addEventListener('click', requestChallenge);
+    solveBtn.addEventListener('click', solveChallenge);
+    fullFlowBtn.addEventListener('click', executeFullFlow);
+    resetBtn.addEventListener('click', resetTeamState);
+    
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', () => {
+      logMessage('info', 'Panel de control - IA Challenge 2025');
+      loadTeams();
+    });
+  </script>
+</body>
+</html>

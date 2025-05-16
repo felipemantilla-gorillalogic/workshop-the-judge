@@ -1,0 +1,47 @@
+/* DisconnectModal.css - Estilos del modal de desconexión */
+
+/* Estilos específicos para sobrescribir el z-index */
+.restart-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(2, 6, 14, 0.9); /* Fondo ligeramente más oscuro para destacar */
+  backdrop-filter: blur(10px); /* Blur más intenso para destacar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000 !important; /* Aseguramos que esté por encima de todo */
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* También ajustamos el contenido del modal */
+.restart-modal .modal-content {
+  z-index: 1001 !important; /* Mayor que el fondo */
+  background-color: var(--panel-bg);
+  border: 2px solid var(--failed-color); /* Borde más grueso para destacar */
+  box-shadow: 0 0 40px rgba(255, 67, 54, 0.4); /* Sombra más intensa */
+}
+
+/* Añadimos animación para la entrada del modal */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Estilos para asegurar que el portal se renderiza correctamente */
+#modal-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  pointer-events: none; /* Permite hacer clic a través si no hay modal */
+}
+
+#modal-root > * {
+  pointer-events: auto; /* Restaura pointer-events para el contenido del modal */
+}

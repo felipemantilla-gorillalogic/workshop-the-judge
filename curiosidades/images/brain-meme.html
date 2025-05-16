@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brain Meme</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .meme-container {
+            width: 600px;
+            height: 800px;
+            background-color: #111;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 87, 51, 0.5);
+        }
+        .meme-row {
+            display: flex;
+            height: 25%;
+            border-bottom: 1px solid #333;
+        }
+        .meme-image {
+            width: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .brain {
+            width: 90%;
+            height: 90%;
+            background: radial-gradient(circle, #ff5733 0%, #c70039 100%);
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+        .brain-1 {
+            transform: scale(0.5);
+        }
+        .brain-2 {
+            transform: scale(0.8);
+            filter: brightness(1.2);
+        }
+        .brain-3 {
+            filter: brightness(1.5) contrast(1.2);
+        }
+        .brain-4 {
+            filter: brightness(2) contrast(1.5);
+            box-shadow: 0 0 20px #ff5733, 0 0 40px #ff5733;
+        }
+        .meme-text {
+            width: 60%;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 16px;
+            text-align: left;
+        }
+        .brain-glow {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            filter: blur(30px);
+            background-color: rgba(255, 87, 51, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="meme-container">
+        <div class="meme-row">
+            <div class="meme-image">
+                <div class="brain brain-1"></div>
+            </div>
+            <div class="meme-text">
+                "Usar IA para traducir textos y resolver matemáticas complejas"
+            </div>
+        </div>
+        <div class="meme-row">
+            <div class="meme-image">
+                <div class="brain brain-2"></div>
+            </div>
+            <div class="meme-text">
+                "Usar IA para generar código, resumir artículos y crear arte digital"
+            </div>
+        </div>
+        <div class="meme-row">
+            <div class="meme-image">
+                <div class="brain brain-3"></div>
+            </div>
+            <div class="meme-text">
+                "Hacer que la IA cree canciones sin sentido como 'Tralalero tralala' y volverlas virales"
+            </div>
+        </div>
+        <div class="meme-row">
+            <div class="meme-image">
+                <div class="brain brain-4"></div>
+                <div class="brain-glow"></div>
+            </div>
+            <div class="meme-text">
+                "Pedirle a la IA que cree imágenes de 'tiburones con tenis Nike saliendo de tostadoras' y compartirlas como si fuera arte revolucionario"
+            </div>
+        </div>
+    </div>
+</body>
+</html>
