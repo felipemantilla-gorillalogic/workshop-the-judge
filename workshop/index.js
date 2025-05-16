@@ -1,12 +1,12 @@
-
-
 const express = require('express');
 const axios = require('axios');
 const OpenAI = require('openai');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
+app.use(express.static('public'));
 
 // Estado del servidor
 let authToken = process.env.AUTH_TOKEN;
@@ -16,9 +16,6 @@ let openai = new OpenAI({
   apiKey: openAiToken
 });
 
-console.log(authToken);
-console.log(openAiToken);
-
 // Configuración del equipo
 const teamConfig = {
   teamName: "Mi Equipo",
@@ -27,9 +24,23 @@ const teamConfig = {
   teamDescription: "Descripción de nuestro equipo"
 };
 
+// Servir página principal
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Endpoint de información del equipo
 app.get('/team-info', (req, res) => {
   res.json(teamConfig);
+});
+
+// Endpoint para obtener estado actual
+app.get('/status', (req, res) => {
+  res.json({
+    registered: !!authToken,
+    lastChallenge: null,
+    lastSolution: null
+  });
 });
 
 // Registro inicial con The Judge
@@ -48,10 +59,18 @@ async function registerWithJudge() {
     });
 
     console.log('Registro exitoso');
+    return { success: true };
   } catch (error) {
     console.error('Error en registro:', error.message);
+    return { success: false, error: error.message };
   }
 }
+
+// Endpoint para iniciar registro
+app.post('/register', async (req, res) => {
+  const result = await registerWithJudge();
+  res.json(result);
+});
 
 // Solicitar un desafío
 async function requestChallenge() {
@@ -115,18 +134,32 @@ async function submitSolution(challengeId, response) {
   }
 }
 
+let isRunning = false;
+let currentChallenge = null;
+let currentSolution = null;
+
+// Endpoint para iniciar/detener el ciclo
+app.post('/toggle-loop', (req, res) => {
+  isRunning = !isRunning;
+  if (isRunning && !mainLoopInterval) {
+    mainLoop();
+  }
+  res.json({ isRunning });
+});
+
 // Ciclo principal del servidor
+let mainLoopInterval;
 async function mainLoop() {
-  while (true) {
-    const challenge = await requestChallenge();
-    if (challenge) {
-      const solution = await processChallenge(challenge);
-      if (solution) {
-        const result = await submitSolution(challenge.challengeId, solution);
+  while (isRunning) {
+    currentChallenge = await requestChallenge();
+    if (currentChallenge) {
+      currentSolution = await processChallenge(currentChallenge);
+      if (currentSolution) {
+        const result = await submitSolution(currentChallenge.challengeId, currentSolution);
         console.log('Resultado:', result);
       }
     }
-    await new Promise(resolve => setTimeout(resolve, 20000)); // Esperar 5 segundos entre desafíos
+    await new Promise(resolve => setTimeout(resolve, 20000));
   }
 }
 
@@ -134,6 +167,5 @@ async function mainLoop() {
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, async () => {
   console.log(`Servidor escuchando en puerto ${PORT}`);
-  //await registerWithJudge();
-  mainLoop();
+  console.log(`Interfaz web disponible en http://localhost:${PORT}`);
 });

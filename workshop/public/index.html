@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Warriors - Panel de Control</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-header {
+            font-weight: bold;
+            background-color: #f1f5f9;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+        }
+        .status-badge {
+            font-size: 0.9rem;
+            padding: 5px 10px;
+        }
+        .team-logo {
+            max-height: 150px;
+            object-fit: contain;
+        }
+        #console {
+            background-color: #212529;
+            color: #20c997;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: monospace;
+            height: 200px;
+            overflow-y: auto;
+        }
+        #challenge-text, #solution-text {
+            white-space: pre-wrap;
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            height: 150px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header text-center">
+        <div class="container">
+            <h1>AI Warriors - Control Panel</h1>
+            <p class="lead">Interfaz para The Judge AI Challenge</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Estado y Control -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">Estado del Sistema</div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <p>Registro: <span id="register-status" class="badge bg-danger status-badge">No Registrado</span></p>
+                            <p>Ciclo: <span id="loop-status" class="badge bg-danger status-badge">Detenido</span></p>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button id="register-btn" class="btn btn-primary">Registrar Equipo</button>
+                            <button id="toggle-btn" class="btn btn-success">Iniciar Ciclo</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Información del Equipo</div>
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <img id="team-logo" src="" alt="Logo del equipo" class="team-logo mb-3">
+                        </div>
+                        <h5 id="team-name" class="card-title text-center"></h5>
+                        <p id="team-description" class="card-text text-center"></p>
+                        <div id="team-members" class="text-center"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desafío y Solución -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Último Desafío</div>
+                    <div class="card-body">
+                        <div id="challenge-text">Esperando desafío...</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Última Solución</div>
+                    <div class="card-body">
+                        <div id="solution-text">Esperando solución...</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Consola</div>
+                    <div class="card-body">
+                        <div id="console"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elementos DOM
+        const registerBtn = document.getElementById('register-btn');
+        const toggleBtn = document.getElementById('toggle-btn');
+        const registerStatus = document.getElementById('register-status');
+        const loopStatus = document.getElementById('loop-status');
+        const teamLogo = document.getElementById('team-logo');
+        const teamName = document.getElementById('team-name');
+        const teamDescription = document.getElementById('team-description');
+        const teamMembers = document.getElementById('team-members');
+        const challengeText = document.getElementById('challenge-text');
+        const solutionText = document.getElementById('solution-text');
+        const consoleOutput = document.getElementById('console');
+
+        // Estado
+        let isRegistered = false;
+        let isRunning = false;
+
+        // Funciones auxiliares
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            consoleOutput.innerHTML += `[${timestamp}] ${message}<br>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        function updateStatus() {
+            fetch('/status')
+                .then(response => response.json())
+                .then(data => {
+                    isRegistered = data.registered;
+                    
+                    if (isRegistered) {
+                        registerStatus.textContent = 'Registrado';
+                        registerStatus.className = 'badge bg-success status-badge';
+                        registerBtn.disabled = true;
+                    } else {
+                        registerStatus.textContent = 'No Registrado';
+                        registerStatus.className = 'badge bg-danger status-badge';
+                        registerBtn.disabled = false;
+                    }
+
+                    if (data.lastChallenge) {
+                        challengeText.textContent = `ID: ${data.lastChallenge.challengeId}\n\n${data.lastChallenge.challenge}\n\nEntrada:\n${data.lastChallenge.input}`;
+                    }
+
+                    if (data.lastSolution) {
+                        solutionText.textContent = data.lastSolution;
+                    }
+                })
+                .catch(error => {
+                    log(`Error obteniendo estado: ${error.message}`);
+                });
+        }
+
+        function loadTeamInfo() {
+            fetch('/team-info')
+                .then(response => response.json())
+                .then(data => {
+                    teamName.textContent = data.teamName;
+                    teamDescription.textContent = data.teamDescription;
+                    teamLogo.src = data.logoURL;
+                    
+                    teamMembers.innerHTML = '<p class="fw-bold mt-3">Miembros:</p>';
+                    data.members.forEach(member => {
+                        teamMembers.innerHTML += `<p>${member}</p>`;
+                    });
+                })
+                .catch(error => {
+                    log(`Error cargando información del equipo: ${error.message}`);
+                });
+        }
+
+        // Eventos
+        registerBtn.addEventListener('click', () => {
+            log('Iniciando registro con The Judge...');
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    log('Registro exitoso');
+                    updateStatus();
+                } else {
+                    log(`Error en registro: ${data.error}`);
+                }
+            })
+            .catch(error => {
+                log(`Error en registro: ${error.message}`);
+            });
+        });
+
+        toggleBtn.addEventListener('click', () => {
+            if (!isRegistered) {
+                log('Debe registrarse primero');
+                return;
+            }
+
+            fetch('/toggle-loop', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                isRunning = data.isRunning;
+                
+                if (isRunning) {
+                    log('Ciclo iniciado');
+                    loopStatus.textContent = 'Ejecutando';
+                    loopStatus.className = 'badge bg-success status-badge';
+                    toggleBtn.textContent = 'Detener Ciclo';
+                    toggleBtn.className = 'btn btn-danger';
+                } else {
+                    log('Ciclo detenido');
+                    loopStatus.textContent = 'Detenido';
+                    loopStatus.className = 'badge bg-danger status-badge';
+                    toggleBtn.textContent = 'Iniciar Ciclo';
+                    toggleBtn.className = 'btn btn-success';
+                }
+            })
+            .catch(error => {
+                log(`Error cambiando estado del ciclo: ${error.message}`);
+            });
+        });
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            log('Panel de control iniciado');
+            updateStatus();
+            loadTeamInfo();
+            
+            // Actualizar estado cada 10 segundos
+            setInterval(updateStatus, 10000);
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
