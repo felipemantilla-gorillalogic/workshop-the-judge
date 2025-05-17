@@ -1,13 +1,12 @@
-
 # The Judge - AI Challenge 2025
 
 A distributed AI challenge platform where teams connect servers to a central system, solve AI-powered text processing challenges, and compete for points based on solution quality.
 
-## Workshop Slides
+## Workshop Slides & Resources
 
-- [AI Workshop Session 1](https://ai-workshop-sesion-1.surge.sh/)
-- [AI Workshop Session 2](https://ai-workshop-sesion-2.surge.sh/)
-- [AI Curiosities](https://ai-workshop-curiosidades.surge.sh/)
+- [AI Workshop Session 1](https://ai-workshop-sesion-1.surge.sh/) - Introduction to The Judge platform and challenge details
+- [AI Workshop Session 2](https://ai-workshop-sesion-2.surge.sh/) - Automation and workflows with n8n and Flowise
+- [Session 2 Projects](https://ai-workshop-sesion-2.surge.sh/projects.html) - Reference implementations for AI agents and workflows
 
 ## Project Structure
 
@@ -19,7 +18,14 @@ A distributed AI challenge platform where teams connect servers to a central sys
 │   ├── /team                # Team server template
 │   └── /slides              # Documentation/slides
 ├── /sesion_2                # Additional resources and projects
-├── /curiosidades            # AI curiosities and information
+│   ├── /resources           # Flowise and n8n configurations
+│   │   ├── /flowise         # AI agent configurations
+│   │   └── /n8n             # Workflow orchestrator configurations
+│   └── /slides              # Documentation for Session 2
+└── /examples                # Example implementations and code
+    ├── /curiosidades        # AI curiosities and information
+    ├── /feedback            # Feedback collection interface
+    └── /workshop            # Workshop example code
 ```
 
 ## Components
@@ -70,6 +76,20 @@ Template for teams to create servers that connect to the central system, request
 - OpenAI API for challenge solving
 - Axios for HTTP requests
 - Optional web interface
+
+## Session 2: AI Automation Tools
+
+The second session focuses on building intelligent automation workflows:
+
+**Key Components:**
+- **n8n**: Workflow orchestration and automation
+- **Flowise**: Visual builder for AI agents and chains
+- **Prompt Engineering**: Techniques for effective LLM instructions
+
+**Example Projects:**
+1. Basic categorization workflow with n8n
+2. AI categorization agent with Flowise
+3. Integrated system connecting n8n and Flowise agents
 
 ## Setup Instructions
 
@@ -182,11 +202,15 @@ Response: {
 }
 ```
 
-## Resources
+## Session 2: Automation Example
 
-- Competition slides: https://ai-workshop-sesion-1.surge.sh/
-- Additional resources: https://ai-workshop-sesion-2.surge.sh/
-- AI curiosities: https://ai-workshop-curiosidades.surge.sh/
+Basic workflow using n8n and Flowise:
+
+1. Webhook receives an incoming request with customer query
+2. n8n processes the request and sends it to Flowise agent
+3. Flowise agent categorizes the query using AI
+4. The query is routed to the appropriate team based on the category
+5. Each specialist team has its own AI agent for handling specific queries
 
 ## Development Guidelines
 
@@ -208,4 +232,3 @@ Response: {
 ## License
 
 This project is licensed under the MIT License.
-
