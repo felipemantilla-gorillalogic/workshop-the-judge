@@ -1,0 +1,237 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "ia-analisis",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          -80,
+          240
+        ],
+        "id": "e8522abb-a85a-47f0-98eb-bda5e466d7ea",
+        "webhookId": "541dc6ea-00d4-4c48-a141-abf7f8214a47"
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "string": [
+              {
+                "name": "consulta",
+                "value": "={{ $json.body.consulta }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Preparar Consulta",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 1,
+        "position": [
+          120,
+          240
+        ],
+        "id": "64e94d58-7dc6-4e2c-adcd-4207334431b7"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=http://localhost:3000/api/v1/prediction/f47d92b8-5b02-40d0-addd-00d1557f8239",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "question",
+                "value": "={{ $json.consulta }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Llamada a Flowise",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 3,
+        "position": [
+          320,
+          240
+        ],
+        "id": "100f6a9c-8d51-46c8-82b9-1035aa0b3a89"
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "string": [
+              {
+                "name": "resultado",
+                "value": "={{ $json }}"
+              },
+              {
+                "name": "consulta_original",
+                "value": "={{ $node[\"Preparar Consulta\"].json.consulta }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Formatear Resultado",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 1,
+        "position": [
+          520,
+          240
+        ],
+        "id": "0014f75a-1aad-469c-b7b7-262aeb2015f6"
+      },
+      {
+        "parameters": {
+          "respondWith": "allIncomingItems",
+          "options": {}
+        },
+        "name": "Responder a Webhook",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          760,
+          140
+        ],
+        "id": "b70aebf8-3ddd-438a-876d-8d31980a4b51"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{$json.resultado.json.team}}",
+                      "rightValue": "billing-team",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "1da8a516-5b85-4c66-b727-8dc4fa84762d"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Billing team"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "60df661d-1fd9-4b72-913b-95ffc4ac85ba",
+                      "leftValue": "={{$json.resultado.json.team}}",
+                      "rightValue": "tech-team",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Tech Team"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          720,
+          380
+        ],
+        "id": "9870f3b7-b4be-45d0-8e64-400c0b3b629c",
+        "name": "Switch"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Preparar Consulta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar Consulta": {
+        "main": [
+          [
+            {
+              "node": "Llamada a Flowise",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Llamada a Flowise": {
+        "main": [
+          [
+            {
+              "node": "Formatear Resultado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Formatear Resultado": {
+        "main": [
+          [
+            {
+              "node": "Responder a Webhook",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "instanceId": "fc9abf5871fcab724177436b78d7692ea12e613113e02c8d5b06fda894e043d5"
+    }
+  }

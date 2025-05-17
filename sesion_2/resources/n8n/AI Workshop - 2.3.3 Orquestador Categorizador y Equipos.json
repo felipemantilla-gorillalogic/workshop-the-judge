@@ -1,0 +1,288 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "ia-analisis",
+          "responseMode": "lastNode",
+          "options": {}
+        },
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          -460,
+          -40
+        ],
+        "id": "58789bc6-7552-40c1-a8ea-33290dc07706",
+        "webhookId": "541dc6ea-00d4-4c48-a141-abf7f8214a47"
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "string": [
+              {
+                "name": "consulta",
+                "value": "={{ $json.body.consulta }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Preparar Consulta",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 1,
+        "position": [
+          -260,
+          -40
+        ],
+        "id": "41f0b1e0-e50d-4d51-b4e9-31932e1e4a5c"
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "string": [
+              {
+                "name": "resultado",
+                "value": "={{ $json }}"
+              },
+              {
+                "name": "consulta_original",
+                "value": "={{ $node[\"Preparar Consulta\"].json.consulta }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Formatear Resultado",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 1,
+        "position": [
+          140,
+          -40
+        ],
+        "id": "86e56471-427f-4778-9761-4335cdf13f9d"
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "options": {}
+        },
+        "name": "Responder a Webhook",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          980,
+          -60
+        ],
+        "id": "4c150226-01d0-4098-a971-e450e202ce17"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{$json.resultado.json.team}}",
+                      "rightValue": "billing-team",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "1da8a516-5b85-4c66-b727-8dc4fa84762d"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Billing team"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "60df661d-1fd9-4b72-913b-95ffc4ac85ba",
+                      "leftValue": "={{$json.resultado.json.team}}",
+                      "rightValue": "tech-team",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Tech Team"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          340,
+          100
+        ],
+        "id": "20db218d-9b34-46c6-8e4c-9fed65f3b5b3",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=http://localhost:3000/api/v1/prediction/f47d92b8-5b02-40d0-addd-00d1557f8239",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "question",
+                "value": "={{ $json.consulta }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Agente Categorizador",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 3,
+        "position": [
+          -60,
+          -40
+        ],
+        "id": "9e715ed1-77dc-48e8-b233-04c591ddfd2b"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=http://localhost:3000/api/v1/prediction/dafbb958-a4b0-483f-89e3-208f45c66d1e",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "question",
+                "value": "={{ $json.consulta_original }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Tech Team Agent",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 3,
+        "position": [
+          560,
+          260
+        ],
+        "id": "6240f26d-caa6-413b-8c8e-57bf56482971"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Preparar Consulta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar Consulta": {
+        "main": [
+          [
+            {
+              "node": "Agente Categorizador",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Formatear Resultado": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Tech Team Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Agente Categorizador": {
+        "main": [
+          [
+            {
+              "node": "Formatear Resultado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tech Team Agent": {
+        "main": [
+          [
+            {
+              "node": "Responder a Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "instanceId": "fc9abf5871fcab724177436b78d7692ea12e613113e02c8d5b06fda894e043d5"
+    }
+  }

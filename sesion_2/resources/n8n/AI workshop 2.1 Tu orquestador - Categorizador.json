@@ -1,0 +1,445 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "categorizar",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        -100
+      ],
+      "id": "8e353a1f-cd33-43c0-85b7-0df06d625359",
+      "webhookId": "cbe9d3c8-0ad4-481a-af7d-dda5067ea94b"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "texto",
+              "value": "={{ $json.body.text }}"
+            },
+            {
+              "name": "categorias",
+              "value": "{\n  \"bug\": [\"error\", \"fallo\", \"bug\", \"problema\", \"no funciona\"],\n  \"feature\": [\"nueva función\", \"añadir\", \"implementar\", \"característica\", \"mejora\"],\n  \"billing\": [\"factura\", \"pago\", \"cobro\", \"precio\", \"reembolso\"],\n  \"account\": [\"cuenta\", \"acceso\", \"contraseña\", \"login\", \"registro\"],\n  \"general\": [\"información\", \"pregunta\", \"duda\", \"ayuda\"]\n}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Preparar Datos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        -100
+      ],
+      "id": "d9fa6463-c3c8-4fbb-91b5-5ad24cb4c4e9"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.texto.toLowerCase().includes(\"error\") || $json.texto.toLowerCase().includes(\"fallo\") || $json.texto.toLowerCase().includes(\"bug\") || $json.texto.toLowerCase().includes(\"problema\") || $json.texto.toLowerCase().includes(\"no funciona\") ? \"true\" : \"false\"  }}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "name": "Es Bug?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -100
+      ],
+      "id": "8c354b78-c4a8-42cc-9f0b-35d47075ee59"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.texto.toLowerCase().includes(\"nueva función\") || $json.texto.toLowerCase().includes(\"añadir\") || $json.texto.toLowerCase().includes(\"implementar\") || $json.texto.toLowerCase().includes(\"característica\") || $json.texto.toLowerCase().includes(\"mejora\") ? \"true\" : \"false\"  }}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "name": "Es Feature?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        -100
+      ],
+      "id": "f029f5a5-dfb7-4656-945f-00255d04937b"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ \n$json.texto.toLowerCase().includes(\"factura\") || \n$json.texto.toLowerCase().includes(\"pago\") || \n$json.texto.toLowerCase().includes(\"cobro\") || \n$json.texto.toLowerCase().includes(\"precio\") || $json.texto.toLowerCase().includes(\"reembolso\") ? \"true\" : \"false\" \n}}",
+              "value2": "=true"
+            }
+          ]
+        }
+      },
+      "name": "Es Billing?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -100
+      ],
+      "id": "9cbe3ddf-7129-4359-b496-a933f9fea4cb"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.texto.toLowerCase().includes(\"cuenta\") || $json.texto.toLowerCase().includes(\"acceso\") || $json.texto.toLowerCase().includes(\"contraseña\") || $json.texto.toLowerCase().includes(\"login\") || $json.texto.toLowerCase().includes(\"registro\") ? \"true\" : \"false\"  }}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "name": "Es Account?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        280,
+        -100
+      ],
+      "id": "bf7ff4cd-572a-49e5-adec-99d785ad47e8"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "categoria",
+              "value": "Bug"
+            },
+            {
+              "name": "confianza",
+              "value": "high"
+            },
+            {
+              "name": "mensaje",
+              "value": "Su ticket ha sido categorizado como un problema técnico (bug)."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Categoría Bug",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -260
+      ],
+      "id": "acd06eee-ef0b-4e86-988c-0e1ca604b9d5"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "categoria",
+              "value": "Feature Request"
+            },
+            {
+              "name": "confianza",
+              "value": "high"
+            },
+            {
+              "name": "mensaje",
+              "value": "Su ticket ha sido categorizado como una solicitud de función."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Categoría Feature",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        -260
+      ],
+      "id": "912c2ca4-58c3-46c4-a736-16a0f161e156"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "categoria",
+              "value": "Billing Issue"
+            },
+            {
+              "name": "confianza",
+              "value": "high"
+            },
+            {
+              "name": "mensaje",
+              "value": "Su ticket ha sido categorizado como un problema de facturación."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Categoría Billing",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -260
+      ],
+      "id": "9ad4b792-5fa0-4a28-aa29-dffc492ada31"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "categoria",
+              "value": "Account Access"
+            },
+            {
+              "name": "confianza",
+              "value": "high"
+            },
+            {
+              "name": "mensaje",
+              "value": "Su ticket ha sido categorizado como un problema de acceso a cuenta."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Categoría Account",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        280,
+        -260
+      ],
+      "id": "d722266a-a078-46f7-bedb-024395145ea0"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "categoria",
+              "value": "General Inquiry"
+            },
+            {
+              "name": "confianza",
+              "value": "medium"
+            },
+            {
+              "name": "mensaje",
+              "value": "Su ticket ha sido categorizado como una consulta general."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Categoría General",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        480,
+        -80
+      ],
+      "id": "695fba56-fe78-4fcf-9067-34c7537ed052"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Responder a Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        680,
+        -100
+      ],
+      "id": "53fa49bc-18ef-4ba8-a753-bfc53d0b65b0"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Preparar Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Datos": {
+      "main": [
+        [
+          {
+            "node": "Es Bug?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es Bug?": {
+      "main": [
+        [
+          {
+            "node": "Categoría Bug",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Es Feature?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es Feature?": {
+      "main": [
+        [
+          {
+            "node": "Categoría Feature",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Es Billing?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es Billing?": {
+      "main": [
+        [
+          {
+            "node": "Categoría Billing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Es Account?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es Account?": {
+      "main": [
+        [
+          {
+            "node": "Categoría Account",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Categoría General",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Categoría Bug": {
+      "main": [
+        [
+          {
+            "node": "Responder a Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Categoría Feature": {
+      "main": [
+        [
+          {
+            "node": "Responder a Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Categoría Billing": {
+      "main": [
+        [
+          {
+            "node": "Responder a Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Categoría Account": {
+      "main": [
+        [
+          {
+            "node": "Responder a Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Categoría General": {
+      "main": [
+        [
+          {
+            "node": "Responder a Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "fc9abf5871fcab724177436b78d7692ea12e613113e02c8d5b06fda894e043d5"
+  }
+}
